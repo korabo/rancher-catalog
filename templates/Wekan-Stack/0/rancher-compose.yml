@@ -1,0 +1,67 @@
+version: '2'
+catalog:
+  name: "Wekan-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "wekan_db"
+      label: "wekan_db"
+      description: "wekan_db"
+      type: "string"
+      required: true
+      default: "wekan_db"
+    - variable: "wekan_db_dump"
+      label: "wekan_db_dump"
+      description: "wekan_db_dump"
+      type: "string"
+      required: true
+      default: "wekan_db_dump"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 16080
+    - variable: "root_url"
+      label: "root_url"
+      description: "root_url"
+      type: "string"
+      required: true
+      default: "http://localhost"
+services:
+  wekan:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+  wekandb:
+    scale: 1
+  wekan-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - priority: 1
+        protocol: tcp
+        service: wekan
+        source_port: ${ext_http_port}
+        target_port: 8080
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

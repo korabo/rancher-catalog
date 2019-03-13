@@ -1,0 +1,52 @@
+# Service name must not have '_' in runcher env.
+version: '2'
+services:
+  openresty:
+    restart: always
+    image: openresty/openresty:1.13.6.2-2-centos
+    stdin_open: true
+    volumes:
+    - ${openresty_conf}:/opt/store/openresty_conf
+    volume_driver: ${volume_driver}
+    expose:
+      - "80"
+      - "443"
+    # ports:
+    # - "${ext_http_port}:80"
+    # - "${ext_https_port}:443"
+    environment:
+      - REDIS_SERVER_HOST=redis
+      - REDIS_SERVER_PORT=6379
+      - EXT_HTTP_PORT=${ext_http_port}
+      - EXT_HTTPS_PORT=${ext_https_port}
+    command: /bin/bash -c "{ /bin/cp -f /opt/store/openresty_conf/nginx.conf /usr/local/openresty/nginx/conf/; } && { /bin/cp -rf /opt/store/openresty_conf/conf.d/* /etc/nginx/conf.d/; } && exec openresty -g 'daemon off;'"
+    links:
+      - redis
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+  redis:
+    restart: always
+    image: redis
+    expose:
+      - "6379"
+    volumes:
+    - ${redis_data}:/data
+    volume_driver: ${volume_driver}
+    labels:
+      io.rancher.container.hostname_override: container_name
+  rediscli:
+    image: redis
+    links:
+      - redis
+    labels:
+      io.rancher.container.hostname_override: container_name
+  openresty-lb:
+    image: rancher/lb-service-haproxy:v0.9.6
+    ports:
+    - "${ext_https_port}"
+    - "${ext_http_port}"
+    labels:
+      io.rancher.container.agent.role: environmentAdmin,agent
+      io.rancher.container.agent_service.drain_provider: 'true'
+      io.rancher.container.create_agent: 'true'

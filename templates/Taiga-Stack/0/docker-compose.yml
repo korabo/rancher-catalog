@@ -1,0 +1,136 @@
+# https://github.com/docker-taiga/taiga
+# how to add user:  use Django admin  http://taiga.xxx.xxx/admin
+# how to logout: use Dev Tool on Browser, clear all cookie, storage.
+version: '2'
+
+services:
+  back:
+    image: dockertaiga/back
+    container_name: taiga-back
+    restart: unless-stopped
+    depends_on:
+      - db
+      - events
+    volumes:
+      - ${taiga_data_media}:/taiga-media
+      - ${taiga_conf_back}:/taiga-conf
+    volume_driver: ${volume_driver}
+    links:
+      - db
+      - events
+      - rabbit
+    environment:
+      TAIGA_HOST: ${TAIGA_HOST}
+      TAIGA_SCHEME: http
+      TAIGA_BACK_HOST: back
+      TAIGA_FRONT_HOST: front
+      EVENTS_HOST: events
+      TAIGA_SECRET: secret
+
+      ENABLE_SSL: 'no'
+      # CERT_NAME=fullchain.pem
+      # CERT_KEY=privkey.pem
+
+      POSTGRES_HOST: db
+      POSTGRES_DB: taiga
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+      RABBIT_HOST: rabbit
+      RABBIT_USER: taiga
+      RABBIT_PASSWORD: password
+      RABBIT_VHOST: taiga
+
+      STARTUP_TIMEOUT: 15s
+
+      # PUBLIC_REGISTER_ENABLED = False
+
+      # To use an external SMTP for emails, fill in these values:
+      # TAIGA_ENABLE_EMAIL: True
+      # TAIGA_EMAIL_FROM: no-reply@taiga.mycompany.net
+      # TAIGA_EMAIL_USE_TLS: True
+      # TAIGA_EMAIL_HOST: smtp.google.com
+      # TAIGA_EMAIL_PORT: 587
+      # TAIGA_EMAIL_USER: me@gmail.com
+      # TAIGA_EMAIL_PASS: super-secure-pass phrase thing!
+
+  front:
+    image: dockertaiga/front
+    container_name: taiga-front
+    restart: unless-stopped
+    volumes:
+      - ${taiga_conf_front}:/taiga-conf
+    volume_driver: ${volume_driver}
+    links:
+      - back
+    environment:
+      TAIGA_HOST: ${TAIGA_HOST}
+      TAIGA_SCHEME: http
+
+  db:
+    image: postgres:alpine
+    container_name: taiga-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: taiga
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - ${taiga_data_db}:/var/lib/postgresql/data
+    volume_driver: ${volume_driver}
+
+  rabbit:
+    image: dockertaiga/rabbit
+    container_name: taiga-rabbit
+    restart: unless-stopped
+    environment:
+      RABBIT_HOST: rabbit
+      RABBIT_USER: taiga
+      RABBIT_PASSWORD: password
+      RABBIT_VHOST: taiga
+      STARTUP_TIMEOUT: 15s
+
+  events:
+    image: dockertaiga/events
+    container_name: taiga-events
+    restart: unless-stopped
+    depends_on:
+      - rabbit
+    environment:
+      RABBIT_HOST: rabbit
+      RABBIT_USER: taiga
+      RABBIT_PASSWORD: password
+      RABBIT_VHOST: taiga
+      TAIGA_SECRET: secret
+
+  proxy:
+    image: dockertaiga/proxy
+    container_name: taiga-proxy
+    restart: unless-stopped
+    depends_on:
+      - back
+      - front
+      - events
+    links:
+      - back
+    ports:
+    - "${ext_https_port}:443"
+    - "${ext_http_port}:80"
+    volumes:
+      #- ./cert:/taiga-cert
+      - ${taiga_conf_proxy}:/taiga-conf
+    volume_driver: ${volume_driver}
+    environment:
+      TAIGA_HOST: ${TAIGA_HOST}
+      TAIGA_SCHEME: http
+      TAIGA_BACK_HOST: back
+      TAIGA_FRONT_HOST: front
+      EVENTS_HOST: events
+      TAIGA_SECRET: secret
+
+      ENABLE_SSL: 'no'
+      # CERT_NAME=fullchain.pem
+      # CERT_KEY=privkey.pem

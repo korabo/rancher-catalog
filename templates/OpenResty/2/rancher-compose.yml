@@ -1,0 +1,74 @@
+version: '2'
+catalog:
+  name: "OpenResty"
+  version: "v1.2.5"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "openresty_conf"
+      label: "openresty_conf"
+      description: "openresty_conf"
+      type: "string"
+      required: true
+      default: "openresty_conf-stg"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 21080
+    - variable: "ext_https_port"
+      label: "ext_https_port"
+      description: "ext_https_port"
+      type: "int"
+      required: true
+      default: 21443
+    - variable: "redis_data"
+      label: "redis_data"
+      description: "redis_data"
+      type: "string"
+      required: true
+      default: "redis_data-stg"
+services:
+  openresty:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+  redis:
+    scale: 1
+  rediscli:
+    scale: 1
+  openresty-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - priority: 1
+        protocol: tcp
+        service: openresty
+        source_port: ${ext_https_port}
+        target_port: 443
+      - priority: 2
+        protocol: tcp
+        service: openresty
+        source_port: ${ext_http_port}
+        target_port: 80
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

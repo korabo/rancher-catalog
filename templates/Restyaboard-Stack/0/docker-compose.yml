@@ -1,0 +1,40 @@
+# https://github.com/RestyaPlatform/board/wiki/Docker:-Build-and-Install
+version: '2'
+
+services:
+  restyaboard:
+    image: restyaplatform/restyaboard:v0.6.6
+    environment:
+      POSTGRES_DB: restyaboard
+      POSTGRES_HOST: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      SMTP_DOMAIN: domain
+      SMTP_USERNAME: user
+      SMTP_PASSWORD: pass
+      SMTP_SERVER: server
+      SMTP_PORT: 465
+      TZ: Etc/UTC
+    volumes:
+    - ${restyaboard_media}:/usr/share/nginx/html/media
+    volume_driver: ${volume_driver}
+    expose:
+    - "80"
+    links:
+      - postgres
+
+  postgres:
+    image: postgres:9-alpine
+    environment:
+      POSTGRES_DB: restyaboard
+      POSTGRES_HOST: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+    volumes:
+    - ${restyaboard_db}:/var/lib/postgresql/data
+    volume_driver: ${volume_driver}
+
+  restyaboard-lb:
+    image: rancher/lb-service-haproxy:v0.9.6
+    ports:
+    - "${ext_http_port}"

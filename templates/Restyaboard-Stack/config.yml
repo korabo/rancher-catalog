@@ -1,0 +1,7 @@
+name: Restyaboard-Stack
+description: "kanban, postgres , , "
+version: v1.0.0
+category: "kanban"
+maintainer: S.TAKE(KRB/SPG)
+license: MIT
+projectURL: http://restya.com/board/

@@ -1,0 +1,7 @@
+name: Taiga-Stack
+description: "kanban, , admin/123123 , if re-initialize back , remove taiga_config_back/.initial_setup.lock "
+version: v1.0.1
+category: "kanban"
+maintainer: S.TAKE(KRB/SPG)
+license: MIT
+projectURL: http://taiga.io

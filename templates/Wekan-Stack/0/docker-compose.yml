@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+
+  wekandb:
+    image: mongo:3.2.12
+    container_name: wekan-db
+    restart: always
+    command: mongod --smallfiles --oplogSize 128
+    expose:
+      - 27017
+    volumes:
+    - ${wekan_db}:/data/db
+    - ${wekan_db_dump}:/dump
+    volume_driver: ${volume_driver}
+
+  wekan:
+    image: quay.io/wekan/wekan
+    container_name: wekan-app
+    restart: always
+    links:
+      - wekandb
+    expose:
+      - "8080"
+    environment:
+      - MONGO_URL=mongodb://wekandb:27017/wekan
+      - ROOT_URL=${root_url}
+    depends_on:
+      - wekandb
+  wekan-lb:
+    image: rancher/lb-service-haproxy:v0.9.6
+    ports:
+    - "${ext_http_port}"

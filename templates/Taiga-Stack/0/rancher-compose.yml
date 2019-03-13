@@ -1,0 +1,74 @@
+version: '2'
+catalog:
+  name: "Taiga-Stack"
+  version: "v1.0.1"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "TAIGA_HOST"
+      label: "TAIGA_HOST"
+      description: "TAIGA_HOST"
+      type: "string"
+      required: true
+      default: "taiga.13.113.237.54.xip.io:18080"
+    - variable: "taiga_data_media"
+      label: "taiga_data_media"
+      description: "taiga_data_media"
+      type: "string"
+      required: true
+      default: "taiga_data_media"
+    - variable: "taiga_conf_back"
+      label: "taiga_conf_back"
+      description: "taiga_conf_back"
+      type: "string"
+      required: true
+      default: "taiga_conf_back"
+    - variable: "taiga_conf_front"
+      label: "taiga_conf_front"
+      description: "taiga_conf_front"
+      type: "string"
+      required: true
+      default: "taiga_conf_front"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 18080
+    - variable: "ext_https_port"
+      label: "ext_https_port"
+      description: "ext_https_port"
+      type: "int"
+      required: true
+      default: 18443
+    - variable: "taiga_data_db"
+      label: "taiga_data_db"
+      description: "taiga_data_db"
+      type: "string"
+      required: true
+      default: "taiga_data_db"
+    - variable: "taiga_conf_proxy"
+      label: "taiga_conf_proxy"
+      description: "taiga_conf_proxy"
+      type: "string"
+      required: true
+      default: "taiga_conf_proxy"
+
+services:
+  back:
+    scale: 1
+  front:
+    scale: 1
+  db:
+    scale: 1
+  rabbit:
+    scale: 1
+  events:
+    scale: 1
+  proxy:
+    scale: 1

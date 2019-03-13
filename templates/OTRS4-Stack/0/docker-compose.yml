@@ -1,0 +1,71 @@
+version: '2'
+
+services:
+  otrs:
+    image: juanluisbaptiste/otrs:latest-4x
+    expose:
+      - "80"
+    depends_on:
+      - mariadb
+      - postfix
+    links:
+      - mariadb:mariadb
+      - postfix:postfix
+    environment:
+    # If you want to run the installer, uncomment this:
+    #       OTRS_INSTALL: "yes"
+      - OTRS_HOSTNAME=otrs # Sets the container's hostname (auto-generated if not defined).
+      - OTRS_DB_NAME=${OTRS_DB_NAME} # Name of database to use. Default is otrs.
+      - OTRS_DB_HOST=mariadb # Hostname or IP address of the database server. Default is mariadb.
+      - OTRS_DB_PORT=3306 # Port of the database server. Default is 3306.
+      - OTRS_DB_USER=${OTRS_DB_USER} # Database user. Default is otrs.
+      - OTRS_DB_PASSWORD=${OTRS_DB_PASSWORD} # otrs user database password. Default password is changeme.
+      - OTRS_ROOT_PASSWORD=${OTRS_ROOT_PASSWORD} # root@localhost user password. Default password is changeme.
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # Database root password so it can be setup. Default password is changeme.
+      - OTRS_LANGUAGE=ja # Set the default language for both agent and customer interfaces (For example, "es" for spanish).
+      - OTRS_TIMEZONE=${TIME_ZONE} # to set the default timezone.
+      # - OTRS_TICKET_COUNTER=0 # Sets the starting point for the ticket counter.
+      - OTRS_NUMBER_GENERATOR=Date # Sets the ticket number generator, possible values are : DateChecksum, Date, AutoIncrement or Random.
+      - SHOW_OTRS_LOGO=false # To disable the OTRS ASCII logo at container startup.
+    volumes:
+      - ${OTRS4_web_config}:/opt/otrs/Kernel
+  #  - /opt/otrs/Kernel
+      - "${OTRS4_web_backup}:/var/otrs/backups"
+      - "/etc/localtime:/etc/localtime:ro"
+    volume_driver: ${volume_driver}
+  mariadb:
+    image: juanluisbaptiste/otrs-mariadb:latest
+    expose:
+      - "3306"
+    volumes:
+      - ${OTRS4_mysql_data}:/var/lib/mysql
+      #- /var/lib/mysql
+      - "/etc/localtime:/etc/localtime:ro"
+    volume_driver: ${volume_driver}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    command:
+      - --max_allowed_packet=65737518
+      - --innodb_log_file_size=269331648
+      - --query_cache_size=36737518
+      - --character_set_server=utf8
+      - --bind-address=0.0.0.0
+  postfix:
+    image: tozd/postfix
+    tty: true
+    stdin_open: true
+    # environment:
+    #   - maildomain=${MAIL_DOMAIN}
+    #   - smtp_user=${SMTP_USER}
+    labels:
+      io.rancher.container.pull_image: always
+    expose:
+      - "25"
+    volumes:
+      - ${OTRS4_postfix_spool}:/var/spool/postfix
+      - "/etc/localtime:/etc/localtime:ro"
+    volume_driver: ${volume_driver}
+  OTRS4-lb:
+    image: rancher/lb-service-haproxy:v0.9.6
+    ports:
+    - "${ext_http_port}"

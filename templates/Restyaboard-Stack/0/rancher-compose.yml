@@ -1,0 +1,62 @@
+version: '2'
+catalog:
+  name: "Restyaboard-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "restyaboard_db"
+      label: "restyaboard_db"
+      description: "restyaboard_db"
+      type: "string"
+      required: true
+      default: "restyaboard_db"
+    - variable: "restyaboard_media"
+      label: "restyaboard_media"
+      description: "restyaboard_media"
+      type: "string"
+      required: true
+      default: "restyaboard_media"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 17080
+services:
+  restyaboard:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+  postgres:
+    scale: 1
+  restyaboard-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - priority: 2
+        protocol: tcp
+        service: restyaboard
+        source_port: ${ext_http_port}
+        target_port: 80
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    image: odoo:12.0
+    depends_on:
+      - db
+    expose:
+      - "8069"
+    volumes:
+      - ${odoo_web_data}:/var/lib/odoo
+      - ${odoo_web_conf}:/etc/odoo
+      - ${odoo_web_addons}:/mnt/extra-addons
+    volume_driver: ${volume_driver}
+  db:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ${odoo_db_data}:/var/lib/postgresql/data/pgdata
+    volume_driver: ${volume_driver}

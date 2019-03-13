@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  openproject:
+    container_name: openproject
+    image: openproject/community:8
+    expose:
+      - 80
+    volumes:
+      - ${OpenPrjct_static}:/var/db/openproject
+      - ${OpenPrjct_logs}:/var/log/supervisor
+      - ${OpenPrjct_pgdata}:/var/lib/postgresql/9.6/main
+    volume_driver: ${volume_driver}
+    environment:
+      - SECRET_KEY_BASE=secret
+      # - EMAIL_DELIVERY_METHOD="smtp"
+      # - SMTP_ADDRESS="smtp.mailgun.org"
+      # - SMTP_PORT="587"
+      # - SMTP_DOMAIN="myDomain.com"
+      # - SMTP_AUTHENTICATION="plain"
+      # - SMTP_USER_NAME="postmaster@myDomain.com"
+      # - SMTP_PASSWORD="MyPassword"
+      # - SMTP_ENABLE_STARTTLS_AUTO="true"
+  openproject-lb:
+    image: rancher/lb-service-haproxy:v0.9.6
+    ports:
+    - "${ext_http_port}"

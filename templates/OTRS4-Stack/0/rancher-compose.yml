@@ -1,0 +1,124 @@
+version: '2'
+catalog:
+  name: "OTRS4-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "MAIL_DOMAIN"
+      label: "MAIL_DOMAIN"
+      description: "MAIL_DOMAIN"
+      type: "string"
+      required: true
+      default: "bizrobo.com"
+    - variable: "SMTP_USER"
+      label: "SMTP_USER"
+      description: "SMTP_USER"
+      type: "string"
+      required: true
+      default: "staging\\:staging"
+    - variable: "OTRS_DB_NAME"
+      label: "OTRS_DB_NAME"
+      description: "OTRS_DB_NAME"
+      type: "string"
+      required: true
+      default: "otrs"
+    - variable: "OTRS_DB_USER"
+      label: "OTRS_DB_USER"
+      description: "OTRS_DB_USER"
+      type: "string"
+      required: true
+      default: "otrs"
+    - variable: "OTRS_ROOT_PASSWORD"
+      label: "OTRS_ROOT_PASSWORD"
+      description: "OTRS_ROOT_PASSWORD"
+      type: "string"
+      required: true
+      default: "changeme"
+    - variable: "OTRS_DB_PASSWORD"
+      label: "OTRS_DB_PASSWORD"
+      description: "OTRS_DB_PASSWORD"
+      type: "string"
+      required: true
+      default: "changeme"
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "MYSQL_ROOT_PASSWORD"
+      description: "MYSQL_ROOT_PASSWORD"
+      type: "string"
+      required: true
+      default: "changeme"
+    - variable: "TIME_ZONE"
+      label: "TIME_ZONE"
+      description: "TIME_ZONE"
+      type: "string"
+      required: true
+      default: "Asia/Tokyo"
+    - variable: "OTRS4_mysql_data"
+      label: "OTRS4_mysql_data"
+      description: "OTRS4_mysql_data"
+      type: "string"
+      required: true
+      default: "OTRS4_mysql_data"
+    - variable: "OTRS4_web_config"
+      label: "OTRS4_web_config"
+      description: "OTRS4_web_config"
+      type: "string"
+      required: true
+      default: "OTRS4_web_config"
+    - variable: "OTRS4_web_backup"
+      label: "OTRS4_web_backup"
+      description: "OTRS4_web_backup"
+      type: "string"
+      required: true
+      default: "OTRS4_web_backup"
+    - variable: "OTRS4_postfix_spool"
+      label: "OTRS4_postfix_spool"
+      description: "OTRS4_postfix_spool"
+      type: "string"
+      required: true
+      default: "OTRS4_postfix_spool"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 16080
+services:
+  otrs:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+
+      unhealthy_threshold: 2
+      interval: 3000
+      strategy: recreate
+  mariadb:
+    scale: 1
+  postfix:
+    scale: 1
+  OTRS4-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - priority: 1
+        protocol: tcp
+        service: otrs
+        source_port: ${ext_http_port}
+        target_port: 80
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

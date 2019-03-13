@@ -1,0 +1,14 @@
+name: Drupal-Stack
+description: "Drupal 8.x, (PostgreSQL 9.6)"
+version: v1.0.0
+category: "management"
+maintainer: S.TAKE(KRB/SPG)
+license: MIT
+projectURL: https://www.drupal.org
+# https://www.linode.com/docs/quick-answers/linux/drupal-with-docker-compose/
+
+# http://52.196.49.70:8888/gitlab/cintake/rancher_catalog.git
+# http://ip-172-30-5-227.ap-northeast-1.compute.internal:8888/gitlab/cintake/rancher_catalog.git
+# http://devel.bizrobo.com/gitlab/cintake/rancher_catalog
+
+# cf: https://github.com/wodby/docker4drupal/blob/master/docker-compose.yml

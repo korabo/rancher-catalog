@@ -1,0 +1,65 @@
+version: '2'
+catalog:
+  name: "OpenProject-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "OpenPrjct_static"
+      label: "OpenPrjct_static"
+      description: "OpenPrjct_static"
+      type: "string"
+      required: true
+      default: "OpenPrjct_static"
+    - variable: "OpenPrjct_logs"
+      label: "OpenPrjct_logs"
+      description: "OpenPrjct_logs"
+      type: "string"
+      required: true
+      default: "OpenPrjct_logs"
+    - variable: "OpenPrjct_pgdata"
+      label: "OpenPrjct_pgdata"
+      description: "OpenPrjct_pgdata"
+      type: "string"
+      required: true
+      default: "OpenPrjct_pgdata"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 14080
+services:
+  openproject:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 3000
+      strategy: recreate
+  openproject-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - priority: 1
+        protocol: tcp
+        service: openproject
+        source_port: ${ext_http_port}
+        target_port: 80
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

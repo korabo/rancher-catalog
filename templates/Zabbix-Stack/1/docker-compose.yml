@@ -1,0 +1,85 @@
+# Service name must not have '_' in runcher env.
+version: '2'
+services:
+  ZabbixMail:
+    image: catatnight/postfix
+    tty: true
+    stdin_open: true
+    environment:
+      - maildomain=${MAIL_DOMAIN}
+      - smtp_user=${SMTP_USER}
+    labels:
+      io.rancher.container.pull_image: always
+    expose:
+      - "25"
+  ZabbixDb:
+    image: mysql:5.7
+    tty: true
+    stdin_open: true
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${zabbix_mysql}:/var/lib/mysql
+    volume_driver: ${volume_driver}
+  ZabbixServer:
+    image: zabbix/zabbix-server-mysql:${OS}-${VERSION}
+    tty: true
+    stdin_open: true
+    environment:
+      - DB_SERVER_HOST=ZabbixDb
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - ZBX_DEBUGLEVEL=${LOG_LEVEL}
+    expose:
+      - "10051"
+    # ports:
+    #   - "10051:10051"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${zabbix_data}:/var/lib/zabbix
+      - ${zabbix_alertscripts}:/usr/lib/zabbix/alertscripts
+    volume_driver: ${volume_driver}
+    links:
+      - ZabbixMail
+      - ZabbixDb
+  ZabbixWeb:
+    image: zabbix/zabbix-web-nginx-mysql:${OS}-${VERSION}
+    tty: true
+    stdin_open: true
+    environment:
+      - ZBX_SERVER_HOST=ZabbixServer
+      - DB_SERVER_HOST=ZabbixDb
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - PHP_TZ=${TIME_ZONE}
+    expose:
+      - "80"
+    # ports:
+    #   - ${HTTP_PORT}:80
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - ZabbixServer
+      - ZabbixMail
+      - ZabbixDb
+  ZabbixAgent:
+    image: zabbix/zabbix-agent:${OS}-${VERSION}
+    privileged: true
+    tty: true
+    stdin_open: true
+    environment:
+      - ZBX_SERVER_HOST=ZabbixServer
+    expose:
+      - "10050"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - ZabbixServer

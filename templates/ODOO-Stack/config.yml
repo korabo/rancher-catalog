@@ -1,0 +1,8 @@
+name: ODOO-Stack
+description: "erp, postgres, etc, , , "
+version: v1.0.0
+category: "erp"
+maintainer: S.TAKE(KRB/SPG)
+license: MIT
+projectURL: https://www.odoo.com
+# https://hub.docker.com/_/odoo

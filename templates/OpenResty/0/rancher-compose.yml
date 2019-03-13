@@ -1,0 +1,41 @@
+version: '2'
+catalog:
+  name: "OpenResty"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "openresty_conf"
+      label: "openresty_conf"
+      description: "openresty_conf"
+      type: "string"
+      required: true
+      default: "openresty_conf"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "public_http_port"
+      label: "public_http_port"
+      description: "public_http_port"
+      type: "int"
+      required: true
+      default: 21080
+    - variable: "public_https_port"
+      label: "public_https_port"
+      description: "public_https_port"
+      type: "int"
+      required: true
+      default: 21443
+services:
+  proxy:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
