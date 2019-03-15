@@ -1,9 +1,14 @@
 name: OpenResty
 description: "nginx with lua, redis, , , "
-version: v1.2.0
+version: v1.4.0
 category: "web"
 maintainer: S.TAKE(KRB/SPG)
 license: MIT
-projectURL: http://52.196.49.70:8888/gitlab/cintake/rancher_catalog.git
+projectURL: https://openresty.org
+# https://github.com/korabo/rancher-catalog
+# https://openresty-reference.readthedocs.io/en/latest/
+# https://qiita.com/voluntas/items/b37aedc70058c519aa00
+# https://qiita.com/masato/items/14c14a516ea32783941c
+# http://52.196.49.70:8888/gitlab/cintake/rancher_catalog.git
 # http://ip-172-30-5-227.ap-northeast-1.compute.internal:8888/gitlab/cintake/rancher_catalog.git
 # http://devel.bizrobo.com/gitlab/cintake/rancher_catalog
