@@ -9,7 +9,7 @@ catalog:
       description: "openresty"
       type: "string"
       required: true
-      default: "openresty-stg"
+      default: "openresty-tst"
     - variable: "volume_driver"
       label: "volume_driver"
       description: "volume_driver rancher-nfs"
@@ -33,7 +33,7 @@ catalog:
       description: "openresty_redis_data"
       type: "string"
       required: true
-      default: "openresty_redis_data-stg"
+      default: "openresty_redis_data-tst"
 services:
   openresty:
     scale: 1
