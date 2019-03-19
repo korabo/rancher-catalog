@@ -5,14 +5,14 @@ services:
     image: drupal:8
     container_name: "drupal"
     volumes:
-      - ${Drupal_data}:/opt/drupal
-      # - ${Drupal_www}_modules:/var/www/html/modules
-      # - ${Drupal_www}_profiles:/var/www/html/profiles
-      # - ${Drupal_www}_themes:/var/www/html/themes
-      # - ${Drupal_www}_sites:/var/www/html/sites
+      # - ${Drupal_data}:/opt/drupal
+      - ${Drupal_www}_modules:/var/www/html/modules
+      - ${Drupal_www}_profiles:/var/www/html/profiles
+      - ${Drupal_www}_themes:/var/www/html/themes
+      - ${Drupal_www}_sites:/var/www/html/sites
     volume_driver: ${volume_driver}
-    expose:
-      - "80"
+    ports:
+      - "${ext_http_port}:80"
     depends_on:
       - db
     environment:
@@ -27,8 +27,3 @@ services:
     environment:
         MYSQL_DATABASE: drupal
         MYSQL_ROOT_PASSWORD: drupal  # root user
-
-  drupal-lb:
-    image: rancher/lb-service-haproxy:v0.9.6
-    ports:
-    - "${ext_http_port}"

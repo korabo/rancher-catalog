@@ -1,21 +1,21 @@
 version: '2'
 catalog:
   name: "Drupal-Stack"
-  version: "v1.0.0"
+  version: "v1.0.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
-    - variable: "Drupal_data"
-      label: "Drupal_data"
-      description: "v"
-      type: "string"
-      required: true
-      default: "Drupal_data"
-    # - variable: "Drupal_www"
-    #   label: "Drupal_www"
-    #   description: "Drupal_www"
+    # - variable: "Drupal_data"
+    #   label: "Drupal_data"
+    #   description: "v"
     #   type: "string"
     #   required: true
-    #   default: "Drupal_www"
+    #   default: "Drupal_data"
+    - variable: "Drupal_www"
+      label: "Drupal_www"
+      description: "Drupal_www"
+      type: "string"
+      required: true
+      default: "Drupal_www"
     - variable: "Drupal_db_data"
       label: "Drupal_db_data"
       description: "Drupal_db_data"
@@ -46,22 +46,3 @@ services:
       strategy: recreate
   db:
     scale: 1
-  drupal-lb:
-    scale: 1
-    start_on_create: true
-    lb_config:
-      port_rules:
-      - priority: 1
-        protocol: tcp
-        service: drupal
-        source_port: ${ext_http_port}
-        target_port: 80
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 42
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      strategy: recreate
-      reinitializing_timeout: 60000
