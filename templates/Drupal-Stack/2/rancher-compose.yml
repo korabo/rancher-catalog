@@ -1,0 +1,54 @@
+version: '2'
+catalog:
+  name: "Drupal-Stack"
+  version: "v1.2.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "Drupal_data"
+      label: "Drupal_data"
+      description: "v"
+      type: "string"
+      required: true
+      default: "Drupal_data"
+    # - variable: "Drupal_www"
+    #   label: "Drupal_www"
+    #   description: "Drupal_www"
+    #   type: "string"
+    #   required: true
+    #   default: "Drupal_www"
+    - variable: "Drupal_db_data"
+      label: "Drupal_db_data"
+      description: "Drupal_db_data"
+      type: "string"
+      required: true
+      default: "Drupal_db_data"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 15080
+    - variable: "ext_https_port"
+      label: "ext_https_port"
+      description: "ext_https_port"
+      type: "int"
+      required: true
+      default: 15443
+services:
+  mariadb:
+    scale: 1
+  drupal:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 3000
+      strategy: recreate

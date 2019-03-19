@@ -1,6 +1,6 @@
 name: Drupal-Stack
-description: "Drupal 8.x, (PostgreSQL 9.6)"
-version: v1.1.0
+description: "Drupal 8.x"
+version: v1.2.0
 category: "management"
 maintainer: S.TAKE(KRB/SPG)
 license: MIT
