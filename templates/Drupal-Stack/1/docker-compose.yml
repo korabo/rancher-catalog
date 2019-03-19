@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  drupal:
+    stdin_open: true
+    tty: true
+    image: "ricardoamaro/drupal8"
+    ports:
+      - "${ext_http_port}:80"
+      # - "${ext_mysql_port}:3306"
+    volumes:
+      - "${Drupal_www}:/var/www/html"
+      - "${Drupal_db_data}:/var/lib/mysql"
+    volume_driver: ${volume_driver}
+    restart: always
+    # Credentials (will be shown in the output)
+    #     Drupal account-name=admin & account-pass=admin
+    #     ROOT SSH/MYSQL PASSWORD will be on $mysql/mysql-root-pw.txt
+    #     DRUPAL MYSQL_PASSWORD will be on $mysql/drupal-db-pw.txt
