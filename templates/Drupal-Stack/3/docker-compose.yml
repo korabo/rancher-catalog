@@ -1,0 +1,29 @@
+version: "2"
+
+services:
+  drupal:
+    image: drupal:8-apache
+    container_name: "drupal"
+    volumes:
+      # - ${Drupal_data}:/opt/drupal
+      - ${Drupal_www}_modules:/var/www/html/modules
+      - ${Drupal_www}_profiles:/var/www/html/profiles
+      - ${Drupal_www}_themes:/var/www/html/themes
+      - ${Drupal_www}_sites:/var/www/html/sites
+    volume_driver: ${volume_driver}
+    ports:
+      - "${ext_http_port}:80"
+    depends_on:
+      - db
+    environment:
+      DRUPAL_DB_HOST: "db:3306"
+    # command: /bin/bash -c "{ mkdir -p /var/www/html/sites/default/files/translations; } && chmod -R 777 /var/www/html/sites"
+  db:
+    image: mysql:5.7
+    container_name: "drupal-db"
+    volumes:
+      - "${Drupal_db_data}:/var/lib/mysql"
+    volume_driver: ${volume_driver}
+    environment:
+        MYSQL_DATABASE: drupal
+        MYSQL_ROOT_PASSWORD: drupal  # root user
