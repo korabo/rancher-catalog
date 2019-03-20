@@ -1,16 +1,16 @@
 version: '2'
 catalog:
   name: "osTicket-Stack"
-  version: "v1.0.0"
+  version: "v1.0.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
-  
+
     - variable: "INSTALL_SECRET"
       label: "INSTALL_SECRET"
       description: "v"
       type: "string"
       required: true
-      default: "INSTALL_SECRET_RPA2019#"
+      default: "INSTALL_SECRET_RPA2019%"
     - variable: "osTicket_data"
       label: "osTicket_data"
       description: "v"
@@ -46,7 +46,7 @@ catalog:
       description: "MYSQL_ROOT_PASSWORD"
       type: "string"
       required: true
-      default: "secretpassword"
+      default: "secretpassword%"
     - variable: "MYSQL_DATABASE"
       label: "MYSQL_DATABASE"
       description: "MYSQL_DATABASE"
@@ -58,7 +58,7 @@ catalog:
       description: "MYSQL_PASSWORD"
       type: "string"
       required: true
-      default: "secretpassword"
+      default: "secretpassword%"
     - variable: "MYSQL_USER"
       label: "MYSQL_USER"
       description: "MYSQL_USER"
@@ -75,5 +75,5 @@ services:
       unhealthy_threshold: 2
       interval: 3000
       strategy: recreate
-  osticket_mysql:
+  db:
     scale: 1
