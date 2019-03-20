@@ -1,0 +1,79 @@
+version: '2'
+catalog:
+  name: "osTicket-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+  
+    - variable: "INSTALL_SECRET"
+      label: "INSTALL_SECRET"
+      description: "v"
+      type: "string"
+      required: true
+      default: "INSTALL_SECRET_RPA2019#"
+    - variable: "osTicket_data"
+      label: "osTicket_data"
+      description: "v"
+      type: "string"
+      required: true
+      default: "osTicket_data"
+    - variable: "osTicket_db_data"
+      label: "osTicket_db_data"
+      description: "osTicket_db_data"
+      type: "string"
+      required: true
+      default: "osTicket_db_data"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 16080
+    - variable: "osTicket_MySQL_port"
+      label: "osTicket_MySQL_port"
+      description: "osTicket_MySQL_port"
+      type: "int"
+      required: true
+      default: 3333
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "MYSQL_ROOT_PASSWORD"
+      description: "MYSQL_ROOT_PASSWORD"
+      type: "string"
+      required: true
+      default: "secretpassword"
+    - variable: "MYSQL_DATABASE"
+      label: "MYSQL_DATABASE"
+      description: "MYSQL_DATABASE"
+      type: "string"
+      required: true
+      default: "osticket"
+    - variable: "MYSQL_PASSWORD"
+      label: "MYSQL_PASSWORD"
+      description: "MYSQL_PASSWORD"
+      type: "string"
+      required: true
+      default: "secretpassword"
+    - variable: "MYSQL_USER"
+      label: "MYSQL_USER"
+      description: "MYSQL_USER"
+      type: "string"
+      required: true
+      default: "osticket"
+services:
+  osticket:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 3000
+      strategy: recreate
+  osticket_mysql:
+    scale: 1
