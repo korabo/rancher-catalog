@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "osTicket-Stack"
-  version: "v1.1.0"
+  version: "v1.1.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
 
@@ -76,7 +76,13 @@ catalog:
       description: "SMTP_USER"
       type: "string"
       required: true
-      default: "osticket\\:osticket"
+      default: "osticket"
+    - variable: "SMTP_PASSWD"
+      label: "SMTP_PASSWD"
+      description: "SMTP_PASSWD"
+      type: "string"
+      required: true
+      default: "osticket"
 services:
   osticket:
     scale: 1

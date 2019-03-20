@@ -44,11 +44,23 @@ services:
     volume_driver: ${volume_driver}
 
   mail:
-    image: catatnight/postfix
+    image: juanluisbaptiste/postfix
     tty: true
     stdin_open: true
     environment:
-      - maildomain=${MAIL_DOMAIN}
-      - smtp_user=${SMTP_USER}
+      SMTP_SERVER: 0.0.0.0
+      SMTP_PORT: 587
+      SMTP_USERNAME: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWD}
+      SERVER_HOSTNAME: ${MAIL_DOMAIN}
     expose:
-      - "25"
+      - "587"
+  # mail:
+  #   image: catatnight/postfix
+  #   tty: true
+  #   stdin_open: true
+  #   environment:
+  #     - maildomain=${MAIL_DOMAIN}
+  #     - smtp_user=${SMTP_USER}
+  #   expose:
+  #     - "25"
