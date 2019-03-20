@@ -5,6 +5,7 @@ category: "helpdesk"
 maintainer: S.TAKE(KRB/SPG)
 license: MIT
 projectURL: https://www.osticket.com
+# https://docs.osticket.com/en/latest/
 # https://www.bountysource.com/issues/52676699-docker-compose
 # https://github.com/CampbellSoftwareSolutions/docker-osticket
 
