@@ -1,23 +1,23 @@
 version: '2'
 
 services:
-  osticket_mysql:
   # docker run --name osticket_mysql -d -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_USER=osticket -e MYSQL_PASSWORD=secret -e MYSQL_DATABASE=osticket mysql:5
-    image: mysql:5
+  osticket_mysql:
+    image: mysql:5.7
     container_name: osticket_mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_USER: ${MYSQL_USER}
     ports:
       - "${osTicket_MySQL_port}:3306"
     volumes:
       - "${osTicket_db_data}:/var/lib/mysql"
     volume_driver: ${volume_driver}
-  osticket:
+
   # docker run --name osticket -d MYSQL_ROOT_PASSWORD=new_root_password -e MYSQL_USER=new_root_user -e MYSQL_PASSWORD=new_secret -e MYSQL_DATABASE=osticket --link osticket_mysql:mysql -p 8080:80 campbellsoftwaresolutions/osticket
-    volume_driver: ${volume_driver}
+  osticket:
     image: campbellsoftwaresolutions/osticket
     container_name: osticket
     depends_on:
@@ -28,7 +28,7 @@ services:
       INSTALL_SECRET: ${INSTALL_SECRET}
       MYSQL_PORT: ${osTicket_MySQL_port}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_USER: ${MYSQL_USER}
     ports:
       - "${ext_http_port}:80"
@@ -36,5 +36,6 @@ services:
       - ${osTicket_data}_plugins:/data/upload/include/plugins
       - ${osTicket_data}_i18n:/data/upload/include/i18n
       - ${osTicket_data}_nginxlog:/var/log/nginx
+    volume_driver: ${volume_driver}
     # extra_hosts:
     #   - "ldap:x.x.x.x"
