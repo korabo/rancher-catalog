@@ -12,6 +12,7 @@ services:
       - db
     environment:
       INSTALL_SECRET: ${INSTALL_SECRET}
+      MYSQL_HOST: db
       MYSQL_PORT: ${osTicket_MySQL_port}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
