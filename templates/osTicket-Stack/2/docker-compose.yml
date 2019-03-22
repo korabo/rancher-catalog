@@ -59,6 +59,10 @@ services:
     - ${osTicket_mail_cfg}:/tmp/docker-mailserver/
     volume_driver: ${volume_driver}
     environment:
+    - HOSTNAME=mail
+    - DOMAINNAME=${MAIL_DOMAIN}
+    - CONTAINER_NAME=mail
+    - OVERRIDE_HOSTNAME=mail.${MAIL_DOMAIN}
     - ENABLE_SPAMASSASSIN=1
     - ENABLE_CLAMAV=1
     - ENABLE_FAIL2BAN=1
