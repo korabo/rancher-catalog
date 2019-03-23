@@ -1,0 +1,58 @@
+version: '2'
+
+catalog:
+  name: "Mail-Stack"
+  version: "v1.1.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "smtp_hostname"
+      label: "smtp_hostname"
+      description: "smtp_hostname"
+      type: "string"
+      required: true
+      default: "example.com"
+    - variable: "MAILNAME"
+      label: "MAILNAME"
+      description: "MAILNAME"
+      type: "string"
+      required: true
+      default: "example.com"
+    - variable: "MY_NETWORKS"
+      label: "MY_NETWORKS"
+      description: "MY_NETWORKS"
+      type: "string"
+      required: true
+      default: ""
+    - variable: "ROOT_ALIAS"
+      label: "ROOT_ALIAS"
+      description: "ROOT_ALIAS"
+      type: "string"
+      required: true
+      default: "root@example.com"
+    - variable: "MY_DESTINATION"
+      label: "MY_DESTINATION"
+      description: "MY_DESTINATION"
+      type: "string"
+      required: true
+      default: "localhost.localdomain, localhost"
+    - variable: "ext_smtp_port"
+      label: "ext_smtp_port"
+      description: "ext_smtp_port"
+      type: "int"
+      required: true
+      default: "10025"
+    - variable: "POSTFIX_VOL"
+      label: "POSTFIX_VOL"
+      description: "POSTFIX_VOL"
+      type: "string"
+      required: true
+      default: "Mail_Postfix"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+services:
+  postfix:
+    scale: 1

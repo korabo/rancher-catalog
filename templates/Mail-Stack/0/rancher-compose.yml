@@ -10,7 +10,7 @@ catalog:
       description: "maildomain"
       type: "string"
       required: true
-      default: "example.none%"
+      default: "example.none"
     - variable: "smtp_uid"
       label: "smtp_uid"
       description: "smtp_uid"
