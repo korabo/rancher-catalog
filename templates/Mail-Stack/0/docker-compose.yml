@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+
+  # https://github.com/catatnight/docker-postfix
+  postfix:
+    image: catatnight/postfix
+    container_name: postfix
+    environment:
+      maildomain: ${maildomain}
+      smtp_user: ${smtp_uid}:${smtp_psw}
+    ports:
+      - "${ext_smtp_port}:25"

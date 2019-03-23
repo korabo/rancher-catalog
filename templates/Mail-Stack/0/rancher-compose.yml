@@ -1,0 +1,34 @@
+version: '2'
+
+catalog:
+  name: "Mail-Stack"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "maildomain"
+      label: "maildomain"
+      description: "maildomain"
+      type: "string"
+      required: true
+      default: "example.none%"
+    - variable: "smtp_uid"
+      label: "smtp_uid"
+      description: "smtp_uid"
+      type: "string"
+      required: true
+      default: "postmaster"
+    - variable: "smtp_psw"
+      label: "smtp_psw"
+      description: "smtp_psw"
+      type: "string"
+      required: true
+      default: "password"
+    - variable: "ext_smtp_port"
+      label: "ext_smtp_port"
+      description: "ext_smtp_port"
+      type: "int"
+      required: true
+      default: "10025"
+services:
+  postfix:
+    scale: 1
