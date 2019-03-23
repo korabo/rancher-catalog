@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "osTicket-Stack"
-  version: "v1.3.0"
+  version: "v1.3.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
 
@@ -41,12 +41,6 @@ catalog:
       type: "int"
       required: true
       default: 16080
-    - variable: "ext_port_pfx"
-      label: "ext_port_pfx"
-      description: "ext_port_pfx"
-      type: "int"
-      required: true
-      default: 16
     - variable: "osTicket_MySQL_port"
       label: "osTicket_MySQL_port"
       description: "osTicket_MySQL_port"
@@ -77,30 +71,6 @@ catalog:
       type: "string"
       required: true
       default: "osticket"
-    - variable: "MAIL_DOMAIN"
-      label: "MAIL_DOMAIN"
-      description: "MAIL_DOMAIN"
-      type: "string"
-      required: true
-      default: "receipt-ai.bizrobo.com"
-    - variable: "SMTP_USER"
-      label: "SMTP_USER"
-      description: "SMTP_USER"
-      type: "string"
-      required: true
-      default: "osticket"
-    - variable: "SMTP_PASSWD"
-      label: "SMTP_PASSWD"
-      description: "SMTP_PASSWD"
-      type: "string"
-      required: true
-      default: "osticket"
-    - variable: "osTicket_mail_cfg"
-      label: "osTicket_mail_cfg"
-      description: "osTicket_mail_cfg"
-      type: "string"
-      required: true
-      default: "osTicket_mail_cfg"
 services:
   mail_postfix_svc:
     start_on_create: true
