@@ -11,7 +11,6 @@ services:
       - db
     links:
       - db
-      - mail-postfix-svc
     environment:
       INSTALL_SECRET: ${INSTALL_SECRET}
       MYSQL_HOST: db
