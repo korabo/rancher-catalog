@@ -1,16 +1,10 @@
 version: '2'
 catalog:
   name: "osTicket-Stack"
-  version: "v1.3.3"
+  version: "v1.3.4"
   description: "S.TAKE(KRB/SPG)"
   questions:
 
-    - variable: "mail_postfix_svc"
-      label: "mail_postfix_svc"
-      description: "mail_postfix_svc"
-      type: "string"
-      required: true
-      default: "Mail_Stack/postfix\:postfix"
     - variable: "INSTALL_SECRET"
       label: "INSTALL_SECRET"
       description: "INSTALL_SECRET"
@@ -72,8 +66,6 @@ catalog:
       required: true
       default: "osticket"
 services:
-  mail_postfix_svc:
-    start_on_create: true
   osticket:
     start_on_create: true
     scale: 1
