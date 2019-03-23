@@ -4,7 +4,7 @@ services:
 
   # https://github.com/osTicket/osTicket
   # docker run --name osticket -d MYSQL_ROOT_PASSWORD=new_root_password -e MYSQL_USER=new_root_user -e MYSQL_PASSWORD=new_secret -e MYSQL_DATABASE=osticket --link osticket_mysql:mysql -p 8080:80 campbellsoftwaresolutions/osticket
-  mail_postfix_svc:
+  mail-postfix-svc:
     image: rancher/dns-service
     external_links:
     - ${mail_postfix_svc}
