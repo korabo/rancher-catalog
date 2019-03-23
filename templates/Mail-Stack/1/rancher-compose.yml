@@ -2,7 +2,7 @@ version: '2'
 
 catalog:
   name: "Mail-Stack"
-  version: "v1.1.0"
+  version: "v1.1.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "smtp_hostname"
@@ -22,7 +22,7 @@ catalog:
       description: "MY_NETWORKS"
       type: "string"
       required: true
-      default: ""
+      default: "10.0.0.0/8,172.17.0.0/12,192.168.0.0/16,169.2540.0/16,127.0.0.0/8"
     - variable: "ROOT_ALIAS"
       label: "ROOT_ALIAS"
       description: "ROOT_ALIAS"
