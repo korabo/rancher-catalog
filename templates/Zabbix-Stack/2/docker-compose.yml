@@ -35,7 +35,6 @@ services:
       - ${zabbix_alertscripts}:/usr/lib/zabbix/alertscripts
     volume_driver: ${volume_driver}
     links:
-      - ZabbixMail
       - ZabbixDb
   ZabbixWeb:
     image: zabbix/zabbix-web-nginx-mysql:${OS}-${VERSION}
@@ -57,7 +56,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     links:
       - ZabbixServer
-      - ZabbixMail
       - ZabbixDb
   ZabbixAgent:
     image: zabbix/zabbix-agent:${OS}-${VERSION}
