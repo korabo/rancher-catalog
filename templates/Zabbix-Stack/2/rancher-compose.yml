@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.2.0"
+  version: "v1.2.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
