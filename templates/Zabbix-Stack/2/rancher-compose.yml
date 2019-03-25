@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.2.1"
+  version: "v1.2.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
@@ -16,6 +16,18 @@ catalog:
       type: "string"
       required: true
       default: "trunk"
+    - variable: "HTTP_PORT"
+      label: "HTTP_PORT"
+      description: "HTTP_PORT"
+      type: "int"
+      required: true
+      default: 11080
+    - variable: "ZABBIX_SVR_PORT"
+      label: "ZABBIX_SVR_PORT"
+      description: "ZABBIX_SVR_PORT"
+      type: "int"
+      required: true
+      default: 10051
     - variable: "DB_NAME"
       label: "DB_NAME"
       description: "DB_NAME"
