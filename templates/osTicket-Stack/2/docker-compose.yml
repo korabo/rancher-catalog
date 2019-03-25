@@ -15,7 +15,7 @@ services:
     environment:
       INSTALL_SECRET: ${INSTALL_SECRET}
       MYSQL_HOST: db
-      MYSQL_PORT: ${osTicket_MySQL_port}
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_USER: ${MYSQL_USER}
@@ -44,6 +44,8 @@ services:
     volume_driver: ${volume_driver}
 
   mail:
+    # https://github.com/tomav/docker-mailserver
+    # ./setup.sh email add osticket@receipt-ai.bizrobo.com osticket
     image: tvial/docker-mailserver:latest
     hostname: mail
     domainname: ${MAIL_DOMAIN}
