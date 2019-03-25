@@ -12,7 +12,7 @@ services:
       MAILNAME: ${MAILNAME}
       MY_NETWORKS: ${MY_NETWORKS}
       ROOT_ALIAS: ${ROOT_ALIAS}
-      MY_DESTINATION: ${MY_DESTINATION}"localhost.localdomain, localhost"
+      MY_DESTINATION: ${MY_DESTINATION}
     ports:
       - "${ext_smtp_port}:25"
     volumes:

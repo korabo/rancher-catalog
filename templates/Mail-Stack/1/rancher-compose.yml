@@ -2,7 +2,7 @@ version: '2'
 
 catalog:
   name: "Mail-Stack"
-  version: "v1.1.1"
+  version: "v1.1.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "smtp_hostname"
