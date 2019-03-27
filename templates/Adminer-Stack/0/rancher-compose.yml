@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Adminer-Stack"
-  version: "v1.0.0"
+  version: "v1.0.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "ext_http_port"
@@ -16,7 +16,7 @@ services:
     health_check:
       healthy_threshold: 2
       response_timeout: 2000
-      port: 80
+      port: 8080
       unhealthy_threshold: 2
       interval: 3000
       strategy: recreate
