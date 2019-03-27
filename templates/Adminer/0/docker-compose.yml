@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - ${ext_http_port}:8080
