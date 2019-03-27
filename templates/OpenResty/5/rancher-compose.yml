@@ -1,0 +1,58 @@
+version: '2'
+catalog:
+  name: "OpenResty"
+  version: "v1.5.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "openresty"
+      label: "openresty"
+      description: "openresty"
+      type: "string"
+      required: true
+      default: "openresty-tst"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 21080
+    - variable: "ext_https_port"
+      label: "ext_https_port"
+      description: "ext_https_port"
+      type: "int"
+      required: true
+      default: 21443
+    - variable: "openresty_redis_data"
+      label: "openresty_redis_data"
+      description: "openresty_redis_data"
+      type: "string"
+      required: true
+      default: "openresty_redis_data-tst"
+    - variable: "ext_rediscommander_port"
+      label: "ext_rediscommander_port"
+      description: "ext_rediscommander_port"
+      type: "int"
+      required: true
+      default: 21081
+services:
+  openresty:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+  redis:
+    scale: 1
+  rediscli:
+    scale: 1
+  redis-commander:
+    scale: 1
