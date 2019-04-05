@@ -80,6 +80,7 @@ services:
     environment:
       - ZBX_SERVER_HOST=ZabbixServer
       # - ZBX_SERVER_PORT=10051
+      - ZBX_HOSTNAME=ZabbixMySqlProxy
       - DB_SERVER_HOST=${PROXYTGT_DB_SERVER_HOST}
       - MYSQL_USER=${PROXYTGT_MYSQL_USER}
       - MYSQL_PASSWORD=${PROXYTGT_MYSQL_PASSWORD}
