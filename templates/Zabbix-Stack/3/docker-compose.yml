@@ -78,6 +78,7 @@ services:
     tty: true
     stdin_open: true
     environment:
+      - ZBX_PROXYMODE=1
       - ZBX_SERVER_HOST=ZabbixServer
       # - ZBX_SERVER_PORT=10051
       - ZBX_HOSTNAME=ZabbixMySqlProxy
