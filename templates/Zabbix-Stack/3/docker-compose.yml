@@ -90,6 +90,9 @@ services:
     links:
       - ZabbixServer
 
+# https://github.com/zabbix/zabbix-docker
+# https://github.com/psgabriel/docker_zabbix4
+# https://github.com/higebu/docker-zabbix-agent-mysql/blob/master/userparameter_mysql.conf
 
 # ZBX_PROXYMODE
 # The variable allows to switch Zabbix proxy mode. Bu default, value is 0 - active proxy. Allowed values are 0 - active proxy and 1 - passive proxy.

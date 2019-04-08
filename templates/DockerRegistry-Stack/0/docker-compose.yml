@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+
+  registry:
+  # docker run -d -p 5000:5000 --restart always --name registry
+  # https://docs.docker.com/registry/deploying/
+    image: registry:2
+    container_name: registry
+    restart: always
+    expose:
+      - "${ext_http_port}:5000"
+    volumes:
+    # -v /mnt/registry:/var/lib/registry
+    - ${docker_registry}:/var/lib/registry
+    volume_driver: ${volume_driver}
