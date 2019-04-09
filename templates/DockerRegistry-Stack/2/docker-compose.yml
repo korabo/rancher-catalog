@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+
+  registry:
+  # docker run -d -p 5000:5000 --restart always --name registry
+  # https://docs.docker.com/registry/deploying/
+    image: registry:2
+    container_name: registry
+    restart: always
+    ports:
+      - "${ext_http_port}:5000"
+    volumes:
+    - ${docker_registry}:/var/lib/registry
+    volume_driver: ${volume_driver}
+
+  registry-front:
+  # sudo docker run \
+  # -d \
+  # -e ENV_DOCKER_REGISTRY_HOST=ENTER-YOUR-REGISTRY-HOST-HERE \
+  # -e ENV_DOCKER_REGISTRY_PORT=ENTER-PORT-TO-YOUR-REGISTRY-HOST-HERE \
+  # -p 8080:80 \
+  # konradkleine/docker-registry-frontend:v2
+    image: konradkleine/docker-registry-frontend:v2
+    container_name: registry-front
+    restart: always
+    ports:
+      - "${ext_http_port_front}:80"
+    links:
+    - registry:registry
+    environment:
+    - ENV_DOCKER_REGISTRY_HOST=registry
+    - ENV_DOCKER_REGISTRY_PORT=5000
+
+  #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
+  docker-dind:
+    image: docker:18-dind
+    container_name: docker-dind
+    privileged: true
+    restart: always
+    command:
+    -  --insecure-registry
+    -  registry:5000
+    links:
+    - registry:registry
+    volumes:
+    - ${docker_registry_work}:/var/lib/docker
+    volume_driver: ${volume_driver}
+
+# docker run -it --rm --link some-docker:docker docker:18 sh
+  docker-cli:
+    image: docker:18
+    container_name: docker-cli
+    tty: true
+    stdin_open: true
+    links:
+    - registry:registry
+    - docker-dind:docker
+
+
+
