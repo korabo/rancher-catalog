@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "DockerRegistry-Stack"
-  version: "v1.1.0"
+  version: "v1.1.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "docker_registry"
@@ -22,6 +22,12 @@ catalog:
       type: "int"
       required: true
       default: 5000
+    - variable: "ext_http_port_front"
+      label: "ext_http_port_front"
+      description: "ext_http_port_front"
+      type: "int"
+      required: true
+      default: 5080
     - variable: "docker_registry_work"
       label: "docker_registry_work"
       description: "docker_registry_work"
@@ -39,5 +45,9 @@ services:
       unhealthy_threshold: 2
       interval: 300000
       strategy: recreate
+
+  registry-front:
+    scale: 1
+
   centos7-dev:
     scale: 1

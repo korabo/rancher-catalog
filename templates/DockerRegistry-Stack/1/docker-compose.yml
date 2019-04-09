@@ -11,15 +11,35 @@ services:
     ports:
       - "${ext_http_port}:5000"
     volumes:
-    # -v /mnt/registry:/var/lib/registry
     - ${docker_registry}:/var/lib/registry
     volume_driver: ${volume_driver}
+
+  registry-front:
+  # sudo docker run \
+  # -d \
+  # -e ENV_DOCKER_REGISTRY_HOST=ENTER-YOUR-REGISTRY-HOST-HERE \
+  # -e ENV_DOCKER_REGISTRY_PORT=ENTER-PORT-TO-YOUR-REGISTRY-HOST-HERE \
+  # -p 8080:80 \
+  # konradkleine/docker-registry-frontend:v2
+    image: konradkleine/docker-registry-frontend:v2
+    container_name: registry-front
+    restart: always
+    ports:
+      - "${ext_http_port_front}:80"
+    environment:
+    - "ENV_DOCKER_REGISTRY_HOST=registry"
+    - "ENV_DOCKER_REGISTRY_PORT=5000"
+
   centos7-dev:
     image: centos:7
+    container_name: centos7-dev
+    # restart: no
+    working_dir: /root
+    entrypoint:
+    - /bin/bash
     links:
-      - registry
+    - registry:registry
     volumes:
-    # -v /mnt/registry:/var/lib/registry
     - ${docker_registry_work}:/root
     volume_driver: ${volume_driver}
 
