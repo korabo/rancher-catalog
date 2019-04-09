@@ -27,8 +27,8 @@ services:
     ports:
       - "${ext_http_port_front}:80"
     environment:
-    - "ENV_DOCKER_REGISTRY_HOST=registry"
-    - "ENV_DOCKER_REGISTRY_PORT=5000"
+    - ENV_DOCKER_REGISTRY_HOST=registry
+    - ENV_DOCKER_REGISTRY_PORT=5000
 
   centos7-dev:
     image: centos:7
