@@ -34,10 +34,11 @@ services:
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
   docker-dind:
-    image: docker:18-dind
+    image: docker:stable-dind
     container_name: docker-dind
     privileged: true
     restart: always
+    entrypoint: dockerd-entrypoint.sh
     command:
     -  --insecure-registry
     -  registry:5000
@@ -49,10 +50,12 @@ services:
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
   docker-cli:
-    image: docker:18
+    image: docker:stable
     container_name: docker-cli
     tty: true
     stdin_open: true
+    entrypoint: docker-entrypoint.sh
+    command: sh
     links:
     - registry:registry
     - docker-dind:docker
