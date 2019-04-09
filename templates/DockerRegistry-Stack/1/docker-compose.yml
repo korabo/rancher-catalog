@@ -26,6 +26,8 @@ services:
     restart: always
     ports:
       - "${ext_http_port_front}:80"
+    links:
+    - registry:registry
     environment:
     - ENV_DOCKER_REGISTRY_HOST=registry
     - ENV_DOCKER_REGISTRY_PORT=5000
