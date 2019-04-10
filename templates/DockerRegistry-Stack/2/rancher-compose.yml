@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "DockerRegistry-Stack"
-  version: "v1.2.2"
+  version: "v1.2.3"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "docker_registry"
@@ -28,6 +28,12 @@ catalog:
       type: "int"
       required: true
       default: 5080
+    - variable: "docker_registry_docker"
+      label: "docker_registry_docker"
+      description: "docker_registry_docker"
+      type: "string"
+      required: true
+      default: "docker_registry_docker"
     - variable: "docker_registry_work"
       label: "docker_registry_work"
       description: "docker_registry_work"

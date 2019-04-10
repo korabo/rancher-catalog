@@ -44,7 +44,7 @@ services:
     links:
     - registry:registry
     volumes:
-    - ${docker_registry_work}:/var/lib/docker
+    - ${docker_registry_docker}:/var/lib/docker
     volume_driver: ${volume_driver}
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
@@ -59,3 +59,6 @@ services:
     links:
     - registry:registry
     - dockerDinD:docker
+    volumes:
+    - ${docker_registry_work}:/root
+    volume_driver: ${volume_driver}
