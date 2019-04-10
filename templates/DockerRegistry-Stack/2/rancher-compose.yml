@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "DockerRegistry-Stack"
-  version: "v1.2.1"
+  version: "v1.2.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "docker_registry"
@@ -46,8 +46,11 @@ services:
       interval: 300000
       strategy: recreate
 
-  registry-front:
+  registryFront:
     scale: 1
 
-  docker-dind:
+  dockerDinD:
+    scale: 1
+
+  dockerCli:
     scale: 1

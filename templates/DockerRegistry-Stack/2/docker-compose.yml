@@ -14,7 +14,7 @@ services:
     - ${docker_registry}:/var/lib/registry
     volume_driver: ${volume_driver}
 
-  registry-front:
+  registryFront:
   # sudo docker run \
   # -d \
   # -e ENV_DOCKER_REGISTRY_HOST=ENTER-YOUR-REGISTRY-HOST-HERE \
@@ -22,7 +22,7 @@ services:
   # -p 8080:80 \
   # konradkleine/docker-registry-frontend:v2
     image: konradkleine/docker-registry-frontend:v2
-    container_name: registry-front
+    container_name: registryFront
     restart: always
     ports:
       - "${ext_http_port_front}:80"
@@ -33,9 +33,9 @@ services:
     - ENV_DOCKER_REGISTRY_PORT=5000
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
-  docker-dind:
+  dockerDinD:
     image: docker:stable-dind
-    container_name: docker-dind
+    container_name: dockerDinD
     privileged: true
     restart: always
     entrypoint: dockerd-entrypoint.sh
@@ -47,16 +47,13 @@ services:
     volume_driver: ${volume_driver}
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
-  docker-cli:
+  dockerCli:
     image: docker:stable
-    container_name: docker-cli
+    container_name: dockerCli
     tty: true
     stdin_open: true
     entrypoint: docker-entrypoint.sh
     command: sh
     links:
     - registry:registry
-    - docker-dind:docker
-
-
-
+    - dockerDinD:docker
