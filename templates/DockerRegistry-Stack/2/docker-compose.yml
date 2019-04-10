@@ -34,7 +34,8 @@ services:
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
   dockerDinD:
-    image: docker:stable-dind
+  # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
+    image: docker.io/docker:stable-dind
     container_name: dockerDinD
     privileged: true
     restart: always
@@ -48,7 +49,8 @@ services:
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
   dockerCli:
-    image: docker:stable
+  # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
+    image: docker.io/docker:stable
     container_name: dockerCli
     tty: true
     stdin_open: true
