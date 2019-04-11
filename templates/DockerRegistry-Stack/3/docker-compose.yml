@@ -10,9 +10,14 @@ services:
     restart: always
     ports:
       - "${ext_http_port}:5000"
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+      # - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/somewhere
     volumes:
     - ${docker_registry}:/var/lib/registry
     volume_driver: ${volume_driver}
+    labels:
+      io.rancher.container.hotname_override: container_name
 
   registryFront:
   # https://github.com/Joxit/docker-registry-ui  joxit/docker-registry-ui:latest
@@ -25,7 +30,8 @@ services:
   # DELETE_IMAGES: if this variable is empty or false, delete feature is deactivated. It is activated otherwise.
   # REGISTRY_TITLE: Set a custom title for your user interface when using REGISTRY_URL (since 0.3.4).
   # PULL_URL: Set a custom url for the docker pull command, this is useful when you use REGISTRY_URL and your registry is on a different host (since 1.1.0).
-    image: joxit/docker-registry-ui:latest
+  # Use joxit/docker-registry-ui:static as reverse proxy to your docker registry (This will avoid CORS).
+    image: joxit/docker-registry-ui:static
     container_name: registryFront
     restart: always
     ports:
@@ -33,8 +39,10 @@ services:
     links:
     - registry:registry
     environment:
-    - REGISTRY_URL=${registry_url}
+    - URL=${registry_url}
     - DELETE_IMAGES=true
+    labels:
+      io.rancher.container.hotname_override: container_name
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
   dockerDinD:
@@ -50,6 +58,8 @@ services:
     volumes:
     - ${docker_registry_docker}:/var/lib/docker
     volume_driver: ${volume_driver}
+    labels:
+      io.rancher.container.hotname_override: container_name
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
   dockerCli:
@@ -66,3 +76,5 @@ services:
     volumes:
     - ${docker_registry_work}:/root
     volume_driver: ${volume_driver}
+    labels:
+      io.rancher.container.hotname_override: container_name
