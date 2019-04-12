@@ -98,7 +98,8 @@ catalog:
       description: "protocol://server:port server must be in DNS or /etc/hosts"
       type: "string"
       required: true
-      default: "http://registry:5000"
+      default: "127.0.0.1:5000"
+      # default: "registry:5000"
     - variable: "TGT_MYSQL_USER"
       label: "TGT_MYSQL_USER"
       description: "TGT_MYSQL_USER"
