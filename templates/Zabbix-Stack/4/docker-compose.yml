@@ -4,7 +4,7 @@ services:
 
   ZabbixDb:
     image: mysql:5.7
-    hotname: "ZabbixDB"
+    hostname: "ZabbixDB"
     tty: true
     stdin_open: true
     environment:
@@ -19,7 +19,7 @@ services:
 
   ZabbixServer:
     image: zabbix/zabbix-server-mysql:${OS}-${VERSION}
-    hotname: "ZabbixServer"
+    hostname: "ZabbixServer"
     tty: true
     stdin_open: true
     environment:
@@ -43,7 +43,7 @@ services:
 
   ZabbixWeb:
     image: zabbix/zabbix-web-nginx-mysql:${OS}-${VERSION}
-    hotname: "ZabbixWeb"
+    hostname: "ZabbixWeb"
     tty: true
     stdin_open: true
     environment:
@@ -67,7 +67,7 @@ services:
   ZabbixAgent:
     image: ${LOCAL_REG}/beb/zbx-zocker-mysql
     # image: ${LOCAL_REG}/beb/zbx-docker-mysql:${OS}-${VERSION}
-    hotname: "ZabbixAgent"
+    hostname: "ZabbixAgent"
     privileged: true
     tty: true
     stdin_open: true
