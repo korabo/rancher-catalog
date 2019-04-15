@@ -4,6 +4,7 @@ services:
 
   ZabbixDb:
     image: mysql:5.7
+    hotname: "ZabbixDB"
     tty: true
     stdin_open: true
     environment:
@@ -18,6 +19,7 @@ services:
 
   ZabbixServer:
     image: zabbix/zabbix-server-mysql:${OS}-${VERSION}
+    hotname: "ZabbixServer"
     tty: true
     stdin_open: true
     environment:
@@ -41,6 +43,7 @@ services:
 
   ZabbixWeb:
     image: zabbix/zabbix-web-nginx-mysql:${OS}-${VERSION}
+    hotname: "ZabbixWeb"
     tty: true
     stdin_open: true
     environment:
@@ -62,8 +65,9 @@ services:
       - ZabbixDb
 
   ZabbixAgent:
-    image: ${LOCAL_REG}/beb/zbx-docker-mysql
+    image: ${LOCAL_REG}/beb/zbx-zocker-mysql
     # image: ${LOCAL_REG}/beb/zbx-docker-mysql:${OS}-${VERSION}
+    hotname: "ZabbixAgent"
     privileged: true
     tty: true
     stdin_open: true
@@ -75,10 +79,15 @@ services:
       - MYSQL_DATABASE=${TGT_MYSQL_DATABASE}
       - MYSQL_SERVER_HOST=${TGT_MYSQL_SERVER_HOST}
       - MYSQL_SERVER_PORT=${TGT_MYSQL_SERVER_PORT}
+      # - DOCKER_URL=http://localhost
+      # - DOCKER_SOCK=/var/run/docker/sock
+      # - CACHE_DIR=/etc/zabbix/scripts/agentd/zocker/tmp
+      # - CACHE_TTL=5
     expose:
       - "10050"
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     links:
       - ZabbixServer
 
