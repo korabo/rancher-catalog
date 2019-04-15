@@ -2,9 +2,10 @@
 version: '2'
 services:
   openresty:
-    restart: always
     image: openresty/openresty:1.13.6.2-2-centos
+    hostname: openresty
     stdin_open: true
+    restart: always
     volumes:
     - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
@@ -22,9 +23,11 @@ services:
     labels:
       io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
+
   redis:
-    restart: always
     image: redis
+    hostname: redis
+    restart: always
     expose:
       - "6379"
     volumes:
@@ -32,12 +35,15 @@ services:
     volume_driver: ${volume_driver}
     labels:
       io.rancher.container.hostname_override: container_name
+
   rediscli:
     image: redis
+    hostname: rediscli
     links:
       - redis
     labels:
       io.rancher.container.hostname_override: container_name
+
   redis-commander:
   # https://hub.docker.com/r/rediscommander/redis-commander
     container_name: redis-commander
@@ -51,3 +57,5 @@ services:
     # lael:host:port,label2:host2:port2, , ,
     ports:
     - "${ext_rediscommander_port}:8081"
+    labels:
+      io.rancher.container.hotname_override: container_name
