@@ -1,0 +1,153 @@
+version: '2'
+catalog:
+  name: "Zabbix-Stack"
+  version: "v1.5.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "OS"
+      label: "OS"
+      description: "OS"
+      type: "string"
+      required: true
+      default: "centos"
+    - variable: "VERSION"
+      label: "VERSION"
+      description: "VERSION"
+      type: "string"
+      required: true
+      default: "trunk"
+    - variable: "HTTP_PORT"
+      label: "HTTP_PORT"
+      description: "HTTP_PORT"
+      type: "int"
+      required: true
+      default: 11080
+    - variable: "ZABBIX_SVR_PORT"
+      label: "ZABBIX_SVR_PORT"
+      description: "ZABBIX_SVR_PORT"
+      type: "int"
+      required: true
+      default: 10051
+
+    - variable: "DB_NAME"
+      label: "DB_NAME"
+      description: "DB_NAME"
+      type: "string"
+      required: true
+      default: "zabbix"
+    - variable: "DB_USER"
+      label: "DB_USER"
+      description: "DB_USER"
+      type: "string"
+      required: true
+      default: "zabbix"
+    - variable: "DB_USER_PASSWORD"
+      label: "DB_USER_PASSWORD"
+      description: "DB_USER_PASSWORD"
+      type: "string"
+      required: true
+      default: "zabbix"
+    - variable: "DB_ROOT_PASSWORD"
+      label: "DB_ROOT_PASSWORD"
+      description: "DB_ROOT_PASSWORD"
+      type: "string"
+      required: true
+      default: "zabbix"
+
+    - variable: "TIME_ZONE"
+      label: "TIME_ZONE"
+      description: "TIME_ZONE"
+      type: "string"
+      required: true
+      default: "Asia/Tokyo"
+    - variable: "LOG_LEVEL"
+      label: "LOG_LEVEL"
+      description: "LOG_LEVEL"
+      type: "int"
+      required: true
+      default: "3"
+# Storage
+    - variable: "zabbix_mysql"
+      label: "zabbix_mysql"
+      description: "zabbix_mysql"
+      type: "string"
+      required: true
+      default: "zabbix_mysql"
+    - variable: "zabbix_data"
+      label: "zabbix_data"
+      description: "zabbix_data"
+      type: "string"
+      required: true
+      default: "zabbix_data"
+    - variable: "zabbix_alertscripts"
+      label: "zabbix_alertscripts"
+      description: "zabbix_alertscripts"
+      type: "string"
+      required: true
+      default: "zabbix_alertscripts"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+# agent
+# ${LOCAL_REG}
+    - variable: "LOCAL_REG"
+      label: "LOCAL_REG"
+      description: "protocol://server:port server must be in DNS or /etc/hosts"
+      type: "string"
+      required: true
+      default: "127.0.0.1:5000"
+      # default: "registry:5000"
+    - variable: "TGT_MYSQL_USER"
+      label: "TGT_MYSQL_USER"
+      description: "TGT_MYSQL_USER"
+      type: "string"
+      required: true
+      default: "some-db-server user name"
+    - variable: "TGT_MYSQL_PASSWORD"
+      label: "TGT_MYSQL_PASSWORD"
+      description: "TGT_MYSQL_PASSWORD"
+      type: "string"
+      required: true
+      default: "some-db-server passwd"
+    - variable: "TGT_MYSQL_DATABASE"
+      label: "TGT_MYSQL_DATABASE"
+      description: "TGT_MYSQL_DATABASE"
+      type: "string"
+      required: true
+      default: "information_schema"
+    - variable: "TGT_MYSQL_SERVER_HOST"
+      label: "TGT_MYSQL_SERVER_HOST"
+      description: "TGT_MYSQL_SERVER_HOST"
+      type: "string"
+      required: true
+      default: "some-db-server name or IP"
+    - variable: "TGT_MYSQL_SERVER_PORT"
+      label: "TGT_MYSQL_SERVER_PORT"
+      description: "TGT_MYSQL_SERVER_PORT"
+      type: "string"
+      required: true
+      default: "3306"
+
+services:
+  ZabbixDb:
+    scale: 1
+  ZabbixServer:
+    scale: 1
+  ZabbixWeb:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 3000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+  ZabbixAgent:
+    scale: 1
+
+  DockbixAgent:
+    scale: 1
