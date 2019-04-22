@@ -64,10 +64,9 @@ services:
       - ZabbixServer
       - ZabbixDb
 
-  ZabbixAgent:
-    image: ${LOCAL_REG}/beb/zbx-zocker-mysql
-    # image: ${LOCAL_REG}/beb/zbx-docker-mysql:${OS}-${VERSION}
-    hostname: "ZabbixAgent"
+  ZabbixZockerAgent:
+    image: ${LOCAL_REG}/beb/zbx-zocker-mysql:${OS}-${VERSION}
+    hostname: "ZabbixZockerAgent"
     privileged: true
     tty: true
     stdin_open: true
@@ -88,23 +87,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    links:
-      - ZabbixServer
-
-  DockbixAgent:
-    image: monitoringartist/zabbix-agent-xxl-limited
-    hostname: "DockbixAgent"
-    privileged: true
-    tty: true
-    stdin_open: true
-    expose:
-      - "10050"
-    environment:
-      - ZA_Server=ZabbixServer
-      - ZA_ServerActive=ZabbixServer
-    volumes:
-      - /:/rootfs
-      - /var/run:/var/run
     links:
       - ZabbixServer
 

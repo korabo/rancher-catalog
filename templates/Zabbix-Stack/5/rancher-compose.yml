@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.5.0"
+  version: "v1.5.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
@@ -15,7 +15,7 @@ catalog:
       description: "VERSION"
       type: "string"
       required: true
-      default: "trunk"
+      default: "4.2-latest"
     - variable: "HTTP_PORT"
       label: "HTTP_PORT"
       description: "HTTP_PORT"
@@ -146,8 +146,5 @@ services:
       interval: 3000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
-  ZabbixAgent:
-    scale: 1
-
-  DockbixAgent:
+  ZabbixZockerAgent:
     scale: 1
