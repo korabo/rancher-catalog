@@ -39,7 +39,7 @@ services:
     links:
     - registry:registry
     environment:
-    - URL=${registry_url}
+    - REGISTRY_URL=${registry_url}
     - DELETE_IMAGES=true
     labels:
       io.rancher.container.hotname_override: container_name
