@@ -52,7 +52,7 @@ services:
     privileged: true
     restart: always
     entrypoint: dockerd-entrypoint.sh
-    command: --insecure-registry registry:5000
+    command: --insecure-registry registry:5000 --mtu=1450
     links:
     - registry:registry
     volumes:
