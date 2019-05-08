@@ -29,7 +29,7 @@ services:
     hostname: redis
     restart: always
     expose:
-      - "6379"
+      - "${ext_redis_port}:6379"
     volumes:
     - ${openresty_redis_data}:/data
     volume_driver: ${volume_driver}
