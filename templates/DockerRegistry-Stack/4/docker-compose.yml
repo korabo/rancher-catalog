@@ -52,11 +52,16 @@ services:
     privileged: true
     restart: always
     entrypoint: dockerd-entrypoint.sh
+    # in Rancher Env mtu is changed fromo Physical host MTU: docker-mtu = host-mtu - 98
     # --mtu=1500  : must be same to docker0: n/w interface, same as "ip link set dev eth0 mtu 1500"
     # https://stackoverflow.com/questions/38882113/docker-in-docker-ssl-problems?rq=1
     # --storage-driver : SpeedUp image build
     # https://koimedenshi.hatenablog.com/entry/2019/03/24/080000
-    command: --insecure-registry registry:${inner_reg_port} --mtu=1500 --storage-driver=overlay2
+    command:
+      - --insecure-registry registry:${inner_reg_port}
+      - --storage-driver overlay2
+      - --mtu=1402
+      - --network-control-plane-mtu=1402
     links:
     - registry:registry
     volumes:

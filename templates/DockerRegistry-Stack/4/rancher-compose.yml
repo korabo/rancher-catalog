@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "DockerRegistry-Stack"
-  version: "v1.4.1"
+  version: "v1.4.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "docker_registry"
