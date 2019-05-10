@@ -1,6 +1,6 @@
 name: DockerRegistry-Stack
 description: "Docker Registry, , , "
-version: v1.0.0
+version: v1.4.0
 category: "docker"
 maintainer: S.TAKE(KRB/SPG)
 license: Apache-2.0

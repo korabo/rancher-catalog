@@ -1,0 +1,68 @@
+version: '2'
+catalog:
+  name: "DockerRegistry-Stack"
+  version: "v1.4.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "docker_registry"
+      label: "docker_registry"
+      description: "docker_registry"
+      type: "string"
+      required: true
+      default: "docker_registry"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 5555
+    - variable: "inner_reg_port"
+      label: "inner_reg_port"
+      description: "inner_reg_port"
+      type: "int"
+      required: true
+      default: 5555
+    - variable: "ext_http_port_front"
+      label: "ext_http_port_front"
+      description: "ext_http_port_front"
+      type: "int"
+      required: true
+      default: 5580
+    - variable: "docker_dind"
+      label: "docker_dind"
+      description: "docker_dind"
+      type: "string"
+      required: true
+      default: "/opt/store/docker_dind"
+    - variable: "docker_client"
+      label: "docker_client"
+      description: "docker_client"
+      type: "string"
+      required: true
+      default: "/opt/store/docker_client"
+
+services:
+  registry:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: ${inner_reg_port}
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+
+  registryFront:
+    scale: 1
+
+  dockerDinD:
+    scale: 1
+
+  dockerCli:
+    scale: 1

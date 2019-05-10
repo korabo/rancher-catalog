@@ -1,0 +1,75 @@
+version: '2'
+
+services:
+
+  registry:
+  # docker run -d -p 5000:5000 --restart always --name registry
+  # https://docs.docker.com/registry/deploying/
+    image: registry:2
+    container_name: registry
+    hostname: registry
+    restart: always
+    ports:
+      - "${ext_http_port}:${inner_reg_port}"
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+      - REGISTRY_HTTP_ADDR=0.0.0.0:${inner_reg_port}
+      # - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/somewhere
+    volumes:
+    - ${docker_registry}:/var/lib/registry
+    volume_driver: ${volume_driver}
+
+  registryFront:
+  # https://github.com/Joxit/docker-registry-ui  joxit/docker-registry-ui:latest
+  # sudo docker run \
+  # -d -p 80:80
+  # -e URL=http://127.0.0.1:5000
+  # -e DELETE_IMAGES=true
+  # URL: set the static URL to use (You will need CORS configuration). Example: http://127.0.0.1:5000. (Required)
+  # REGISTRY_URL: your docker registry URL to contact (CORS configuration is not needed). Example: http://my-docker-container:5000. (Can't be used with URL, since 0.3.2).
+  # DELETE_IMAGES: if this variable is empty or false, delete feature is deactivated. It is activated otherwise.
+  # REGISTRY_TITLE: Set a custom title for your user interface when using REGISTRY_URL (since 0.3.4).
+  # PULL_URL: Set a custom url for the docker pull command, this is useful when you use REGISTRY_URL and your registry is on a different host (since 1.1.0).
+  # Use joxit/docker-registry-ui:static as reverse proxy to your docker registry (This will avoid CORS).
+    image: joxit/docker-registry-ui:static
+    container_name: registryFront
+    hostname: registryFront
+    restart: always
+    ports:
+      - "${ext_http_port_front}:80"
+    links:
+    - registry:registry
+    environment:
+    - REGISTRY_URL=http://registry:${inner_reg_port}
+    - DELETE_IMAGES=true
+
+  #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
+  dockerDinD:
+  # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
+    image: docker.io/docker:stable-dind
+    container_name: dockerDinD
+    hostname: dockerDinD
+    privileged: true
+    restart: always
+    entrypoint: dockerd-entrypoint.sh
+    command: --insecure-registry registry:${inner_reg_port} --mtu=1450 --storage-driver=overlay
+    links:
+    - registry:registry
+    volumes:
+    - ${docker_dind}:/var/lib/docker
+
+# docker run -it --rm --link some-docker:docker docker:18 sh
+  dockerCli:
+  # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
+    image: docker.io/docker:stable
+    container_name: dockerCli
+    hostname: dockerCli
+    tty: true
+    stdin_open: true
+    entrypoint: docker-entrypoint.sh
+    command: sh
+    links:
+    - registry:registry
+    - dockerDinD:docker
+    volumes:
+    - ${docker_client}:${docker_client}
