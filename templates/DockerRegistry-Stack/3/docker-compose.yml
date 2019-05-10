@@ -10,9 +10,10 @@ services:
     hostname: registry
     restart: always
     ports:
-      - "${ext_http_port}:5000"
+      - "${ext_http_port}:${inner_reg_port}"
     environment:
       - REGISTRY_STORAGE_DELETE_ENABLED=true
+      - REGISTRY_HTTP_ADDR=0.0.0.0:${inner_reg_port}
       # - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/somewhere
     volumes:
     - ${docker_registry}:/var/lib/registry
@@ -39,7 +40,7 @@ services:
     links:
     - registry:registry
     environment:
-    - REGISTRY_URL=${registry_url}
+    - REGISTRY_URL=http://registry:${inner_reg_port}
     - DELETE_IMAGES=true
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
@@ -51,7 +52,7 @@ services:
     privileged: true
     restart: always
     entrypoint: dockerd-entrypoint.sh
-    command: --insecure-registry registry:5555 --mtu=1450 --storage-driver=overlay2
+    command: --insecure-registry registry:${inner_reg_port} --mtu=1450 --storage-driver=overlay
     links:
     - registry:registry
     volumes:
