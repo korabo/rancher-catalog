@@ -51,15 +51,18 @@ services:
     hostname: dockerDinD
     privileged: true
     restart: always
-    entrypoint: dockerd-entrypoint.sh
+    # entrypoint: dockerd-entrypoint.sh
     # in Rancher Env mtu is changed fromo Physical host MTU: docker-mtu = host-mtu - 98
-    # --mtu=1500  : must be same to docker0: n/w interface, same as "ip link set dev eth0 mtu 1500"
+    # --mtu=1402  : must be same to host docker eth0 (no matter docker0 interface mtu : 1500)
+    #  or do in child docker (dind) "ip link set dev eth0 mtu 1402"
     # https://stackoverflow.com/questions/38882113/docker-in-docker-ssl-problems?rq=1
     # --storage-driver : SpeedUp image build
     # https://koimedenshi.hatenablog.com/entry/2019/03/24/080000
     command:
-      - --insecure-registry registry:${inner_reg_port}
-      - --storage-driver overlay2
+      - --insecure-registry
+      - registry:${inner_reg_port}
+      - --storage-driver
+      - overlay2
       - --mtu=1402
       - --network-control-plane-mtu=1402
     links:
