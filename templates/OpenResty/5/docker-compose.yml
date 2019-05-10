@@ -19,7 +19,7 @@ services:
       - EXT_HTTPS_PORT=${ext_https_port}
     command: /bin/bash -c "{ /bin/cp -f /opt/store/openresty/conf/nginx.conf /usr/local/openresty/nginx/conf/; } && { /bin/cp -rf /opt/store/openresty/conf/conf.d/* /etc/nginx/conf.d/; } && exec openresty -g 'daemon off;'"
     links:
-      - redis
+      - redis:redis
     labels:
       io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
@@ -28,7 +28,7 @@ services:
     image: redis
     hostname: redis
     restart: always
-    expose:
+    ports:
       - "${ext_redis_port}:6379"
     volumes:
     - ${openresty_redis_data}:/data
@@ -38,9 +38,12 @@ services:
 
   rediscli:
     image: redis
+    tty: true
     hostname: rediscli
     links:
-      - redis
+      - redis:redis
+    command:
+      - /bin/bash
     labels:
       io.rancher.container.hostname_override: container_name
 
@@ -51,11 +54,9 @@ services:
     image: rediscommander/redis-commander:latest
     restart: always
     links:
-      - redis
+      - redis:redis
     environment:
     - REDIS_HOSTS=local:redis:6379
     # lael:host:port,label2:host2:port2, , ,
     ports:
     - "${ext_rediscommander_port}:8081"
-    labels:
-      io.rancher.container.hotname_override: container_name

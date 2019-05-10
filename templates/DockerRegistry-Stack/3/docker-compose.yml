@@ -7,6 +7,7 @@ services:
   # https://docs.docker.com/registry/deploying/
     image: registry:2
     container_name: registry
+    hostname: registry
     restart: always
     ports:
       - "${ext_http_port}:5000"
@@ -16,8 +17,6 @@ services:
     volumes:
     - ${docker_registry}:/var/lib/registry
     volume_driver: ${volume_driver}
-    labels:
-      io.rancher.container.hotname_override: container_name
 
   registryFront:
   # https://github.com/Joxit/docker-registry-ui  joxit/docker-registry-ui:latest
@@ -33,6 +32,7 @@ services:
   # Use joxit/docker-registry-ui:static as reverse proxy to your docker registry (This will avoid CORS).
     image: joxit/docker-registry-ui:static
     container_name: registryFront
+    hostname: registryFront
     restart: always
     ports:
       - "${ext_http_port_front}:80"
@@ -41,31 +41,29 @@ services:
     environment:
     - REGISTRY_URL=${registry_url}
     - DELETE_IMAGES=true
-    labels:
-      io.rancher.container.hotname_override: container_name
 
   #  docker run --privileged --name some-docker -v /my/own/var-lib-docker:/var/lib/docker -d docker:dind
   dockerDinD:
   # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
     image: docker.io/docker:stable-dind
     container_name: dockerDinD
+    hostname: dockerDinD
     privileged: true
     restart: always
     entrypoint: dockerd-entrypoint.sh
-    command: --insecure-registry registry:5555 --mtu=1450
+    command: --insecure-registry registry:5555 --mtu=1450 --storage-driver=overlay2
     links:
     - registry:registry
     volumes:
     - ${docker_registry_docker}:/var/lib/docker
     volume_driver: ${volume_driver}
-    labels:
-      io.rancher.container.hotname_override: container_name
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
   dockerCli:
   # IMPORTANT: docker.io/ must be specified!! although 'docker:' will be ignored and removed.
     image: docker.io/docker:stable
     container_name: dockerCli
+    hostname: dockerCli
     tty: true
     stdin_open: true
     entrypoint: docker-entrypoint.sh
@@ -76,5 +74,3 @@ services:
     volumes:
     - ${docker_registry_work}:/root
     volume_driver: ${volume_driver}
-    labels:
-      io.rancher.container.hotname_override: container_name
