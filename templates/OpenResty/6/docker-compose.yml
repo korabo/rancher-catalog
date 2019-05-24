@@ -73,12 +73,13 @@ services:
     hostname: goaccess
     image: allinurl/goaccess
     restart: always
+    stdin_open: true
+    tty: true
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      # - /srv/goaccess/data:/srv/data
-      # - /srv/goaccess/logs:/srv/logs
-      # - /srv/goaccess/html:/srv/report
-      - ${goaccess}:/srv
+      - ${goaccess_data}:/srv/data
+      - ${goaccess_logs}:/srv/logs
+      - ${goaccess_report}:/srv/report
       - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
     links:
