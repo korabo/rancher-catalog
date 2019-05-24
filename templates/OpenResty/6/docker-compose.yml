@@ -1,0 +1,87 @@
+# Service name must not have '_' in runcher env.
+version: '2'
+services:
+  openresty:
+    image: openresty/openresty:1.13.6.2-2-centos
+    hostname: openresty
+    stdin_open: true
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${openresty}:/opt/store/openresty
+    volume_driver: ${volume_driver}
+    ports:
+      - "${ext_http_port}:80"
+      - "${ext_https_port}:443"
+    environment:
+      - REDIS_SERVER_HOST=redis
+      - REDIS_SERVER_PORT=6379
+      - EXT_HTTP_PORT=${ext_http_port}
+      - EXT_HTTPS_PORT=${ext_https_port}
+    command: /bin/bash -c "{ /bin/cp -f /opt/store/openresty/conf/nginx.conf /usr/local/openresty/nginx/conf/; } && { /bin/cp -rf /opt/store/openresty/conf/conf.d/* /etc/nginx/conf.d/; } && exec openresty -g 'daemon off;'"
+    links:
+      - redis:redis
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+
+  redis:
+    image: redis
+    hostname: redis
+    restart: always
+    ports:
+      - "${ext_redis_port}:6379"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${openresty_redis_data}:/data
+    volume_driver: ${volume_driver}
+    labels:
+      io.rancher.container.hostname_override: container_name
+
+  rediscli:
+    image: redis
+    tty: true
+    hostname: rediscli
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - redis:redis
+    command:
+      - /bin/bash
+    labels:
+      io.rancher.container.hostname_override: container_name
+
+  redis-commander:
+  # https://hub.docker.com/r/rediscommander/redis-commander
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - redis:redis
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    # lael:host:port,label2:host2:port2, , ,
+    ports:
+    - "${ext_rediscommander_port}:8081"
+
+  goaccess:
+  # https://hub.docker.com/r/rediscommander/redis-commander
+    container_name: goaccess
+    hostname: goaccess
+    image: allinurl/goaccess
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - /srv/goaccess/data:/srv/data
+      # - /srv/goaccess/logs:/srv/logs
+      # - /srv/goaccess/html:/srv/report
+      - ${goaccess}:/srv
+      - ${openresty}:/opt/store/openresty
+    volume_driver: ${volume_driver}
+    links:
+      - redis:redis
+    ports:
+    - "${ext_goaccess_port}:7890"
