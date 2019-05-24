@@ -68,7 +68,7 @@ services:
     - "${ext_rediscommander_port}:8081"
 
   goaccess:
-  # https://hub.docker.com/r/rediscommander/redis-commander
+  # https://goaccess.io/
     container_name: goaccess
     hostname: goaccess
     image: allinurl/goaccess
@@ -82,7 +82,11 @@ services:
       - ${goaccess_report}:/srv/report
       - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
-    links:
-      - redis:redis
+    command:
+      - /bin/sh
     ports:
     - "${ext_goaccess_port}:7890"
+
+#  "goaccess",
+#             "--no-global-config",
+#             "--config-file=/srv/data/goaccess.conf"
