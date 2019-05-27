@@ -83,7 +83,7 @@ services:
       - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
     command:
-      - /bin/sh
+      - 'goaccess /opt/store/openresty/access.log -o /opt/store/openresty/data/report.html --log-format=COMBINED --real-time-html'
     ports:
     - "${ext_goaccess_port}:7890"
 

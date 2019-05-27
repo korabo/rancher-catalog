@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "OpenResty"
-  version: "v1.6.2"
+  version: "v1.6.3"
   description: "S.TAKE(KRB/SPG) add ext_redis_port"
   questions:
     - variable: "openresty"
