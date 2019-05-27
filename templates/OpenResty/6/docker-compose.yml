@@ -82,13 +82,9 @@ services:
       - ${goaccess_report}:/srv/report
       - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
-    entrypoint:
-      - /usr/bin/env
-    command:
-      - bash
-      # - 'goaccess /opt/store/openresty/access.log -o /opt/store/openresty/data/report.html --log-format=COMBINED --real-time-html'
+    command: goaccess /opt/store/openresty/access.log -o /opt/store/openresty/data/report.html --log-format=COMBINED --real-time-html --port=${ext_goaccess_port}
     ports:
-    - "${ext_goaccess_port}:7890"
+    - "${ext_goaccess_port}:${ext_goaccess_port}" # 9870
 
 #  "goaccess",
 #             "--no-global-config",

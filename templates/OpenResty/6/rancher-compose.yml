@@ -66,10 +66,10 @@ catalog:
       default: "openresty_goaccess_report-tst"
     - variable: "ext_goaccess_port"
       label: "ext_goaccess_port"
-      description: "ext_goaccess_port(82)"
+      description: "ext_goaccess_port(7890)"
       type: "int"
       required: true
-      default: 21082
+      default: 21890
 services:
   openresty:
     scale: 1
