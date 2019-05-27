@@ -77,12 +77,9 @@ services:
     tty: true
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${goaccess_data}:/srv/data
-      - ${goaccess_logs}:/srv/logs
-      - ${goaccess_report}:/srv/report
       - ${openresty}:/opt/store/openresty
     volume_driver: ${volume_driver}
-    command: goaccess /opt/store/openresty/access.log -o /opt/store/openresty/data/report.html --log-format=COMBINED --real-time-html --port=${ext_goaccess_port}
+    command: goaccess /opt/store/openresty/logs/access.log -o /opt/store/openresty/logs/report.html --log-format=COMBINED --real-time-html --port=${ext_goaccess_port}
     ports:
     - "${ext_goaccess_port}:${ext_goaccess_port}" # 9870
 

@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "OpenResty"
-  version: "v1.6.4"
+  version: "v1.6.5"
   description: "S.TAKE(KRB/SPG) add ext_redis_port"
   questions:
     - variable: "openresty"
@@ -46,24 +46,6 @@ catalog:
       type: "int"
       required: true
       default: 21081
-    - variable: "goaccess_data"
-      label: "goaccess_data"
-      description: "goaccess_data"
-      type: "string"
-      required: true
-      default: "openresty_goaccess_data-tst"
-    - variable: "goaccess_logs"
-      label: "goaccess_logs"
-      description: "goaccess_logs"
-      type: "string"
-      required: true
-      default: "openresty_goaccess_logs-tst"
-    - variable: "goaccess_report"
-      label: "goaccess_report"
-      description: "goaccess_report"
-      type: "string"
-      required: true
-      default: "openresty_goaccess_report-tst"
     - variable: "ext_goaccess_port"
       label: "ext_goaccess_port"
       description: "ext_goaccess_port(7890)"
