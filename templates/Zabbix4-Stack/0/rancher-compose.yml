@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.0.0"
+  version: "v1.0.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
@@ -73,25 +73,25 @@ catalog:
       description: "zabbix_mysql"
       type: "string"
       required: true
-      default: "zabbix_mysql"
+      default: "/opt/zabbix/mysql"
     - variable: "zabbix_data"
       label: "zabbix_data"
       description: "zabbix_data"
       type: "string"
       required: true
-      default: "zabbix_data"
+      default: "/opt/zabbix/data"
     - variable: "zabbix_alertscripts"
       label: "zabbix_alertscripts"
-      description: "zabbix_alertscripts"
+      description: "alertscripts"
       type: "string"
       required: true
-      default: "zabbix_alertscripts"
-    - variable: "volume_driver"
-      label: "volume_driver"
-      description: "volume_driver rancher-nfs"
-      type: "string"
-      required: true
-      default: "rancher-nfs"
+      default: "/opt/zabbix/alertscripts"
+    # - variable: "volume_driver"
+    #   label: "volume_driver"
+    #   description: "volume_driver rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "rancher-nfs"
 # agent
 
 services:

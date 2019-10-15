@@ -15,7 +15,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${zabbix_mysql}:/var/lib/mysql
-    volume_driver: ${volume_driver}
 
   ZabbixServer:
     image: zabbix/zabbix-server-mysql:${OS}-${VERSION}
@@ -37,7 +36,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${zabbix_data}:/var/lib/zabbix
       - ${zabbix_alertscripts}:/usr/lib/zabbix/alertscripts
-    volume_driver: ${volume_driver}
     links:
       - ZabbixDb
 
