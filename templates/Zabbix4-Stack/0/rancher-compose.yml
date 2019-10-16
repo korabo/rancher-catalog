@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.0.3"
+  version: "v1.0.4"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
@@ -92,6 +92,7 @@ catalog:
     #   type: "string"
     #   required: true
     #   default: "rancher-nfs"
+
 # agent
 
 services:
@@ -106,6 +107,6 @@ services:
       response_timeout: 2000
       port: 80
       unhealthy_threshold: 2
-      interval: 3000
+      interval: 30000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
