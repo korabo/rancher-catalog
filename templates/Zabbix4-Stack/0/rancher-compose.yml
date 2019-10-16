@@ -47,13 +47,13 @@ catalog:
       description: "DB_USER_PASSWORD"
       type: "string"
       required: true
-      default: "**some-passwd**"
+      # default: "**some-passwd**"
     - variable: "DB_ROOT_PASSWORD"
       label: "DB_ROOT_PASSWORD"
       description: "DB_ROOT_PASSWORD"
       type: "string"
       required: true
-      default: "**some-passwd**"
+      # default: "**some-passwd**"
 
     - variable: "TIME_ZONE"
       label: "TIME_ZONE"
