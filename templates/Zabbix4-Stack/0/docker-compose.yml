@@ -58,7 +58,7 @@ services:
       - ${HTTP_PORT}:80
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${WEB_FONT_TTF}:/usr/share/zabbix/assets/fonts/DejaVuSans.ttf
+      - ${WEB_FONT_TTF}:/usr/share/zabbix/assets/fonts/DejaVuSans.ttf:ro
     links:
       - ZabbixServer
       - ZabbixDb
