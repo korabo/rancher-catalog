@@ -12,6 +12,8 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_USER_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    expose:
+      - "3306"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${zabbix_mysql}:/var/lib/mysql
@@ -60,12 +62,16 @@ services:
       - ${HTTP_PORT}:80
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      # 4.2
+      # - ${WEB_FONT_TTF}:/usr/share/zabbix/fonts/graphfont.ttf
+      # 4.4
+      - ${WEB_FONT_TTF}:/usr/share/zabbix/assets/fonts/DejaVuSans.ttf:ro
     links:
       - ZabbixServer
       - ZabbixDb
 
   ZabbixZockerAgent:
-    image: ${LOCAL_REG}/beb/zbx-zocker-mysql:${OS}-${VERSION}
+    image: ${ZOCKER_IMAGE}
     hostname: "ZabbixZockerAgent"
     privileged: true
     tty: true

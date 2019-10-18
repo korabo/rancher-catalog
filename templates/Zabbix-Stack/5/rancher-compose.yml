@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Zabbix-Stack"
-  version: "v1.5.1"
+  version: "v1.5.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "OS"
@@ -91,14 +91,21 @@ catalog:
       type: "string"
       required: true
       default: "rancher-nfs"
+    - variable: "WEB_FONT_TTF"
+      label: "WEB_FONT_TTF"
+      description: "CentOS: yum install -y vlgothic-p-fonts"
+      type: "string"
+      required: true
+      # CentOS: yum install -y vlgothic-p-fonts
+      default: "/usr/share/fonts/vlgothic/VL-PGothic-Regular.ttf"
 # agent
 # ${LOCAL_REG}
-    - variable: "LOCAL_REG"
-      label: "LOCAL_REG"
+    - variable: "ZOCKER_IMAGE"
+      label: "ZOCKER_IMAGE"
       description: "protocol://server:port server must be in DNS or /etc/hosts"
       type: "string"
       required: true
-      default: "127.0.0.1:5000"
+      default: "127.0.0.1:5555/beb/zbx-zocker-mysql:centos-4.2-latest"
       # default: "registry:5000"
     - variable: "TGT_MYSQL_USER"
       label: "TGT_MYSQL_USER"
