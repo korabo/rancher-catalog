@@ -118,4 +118,4 @@ services:
       unhealthy_threshold: 2
       interval: 30000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
+      # request_line: GET "/" "HTTP/1.0"
