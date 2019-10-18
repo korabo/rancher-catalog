@@ -1,6 +1,6 @@
 name: Zabbix4-Stack
 description: "zabbix web mysql stack"
-version: v1.0.5
+version: v1.0.6
 category: "management"
 maintainer: S.TAKE(KRB/SPG)
 license: MIT
