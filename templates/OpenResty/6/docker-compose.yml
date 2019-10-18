@@ -69,6 +69,7 @@ services:
 
   goaccess:
   # https://goaccess.io/
+  # https://www.techlive.tokyo/archives/3906
     container_name: goaccess
     hostname: goaccess
     image: allinurl/goaccess
