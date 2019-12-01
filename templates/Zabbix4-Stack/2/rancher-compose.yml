@@ -1,0 +1,132 @@
+version: '2'
+catalog:
+  name: "Zabbix-Stack"
+  version: "v1.1.0-without-db"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "OS"
+      label: "OS"
+      description: "ubuntu / centos / alpine"
+      type: "string"
+      required: true
+      default: "centos"
+    - variable: "VERSION"
+      label: "VERSION"
+      description: "centos-3.(0|2)-latest / centos-4.(0|2|4)-latest"
+      type: "string"
+      required: true
+      # https://hub.docker.com/r/zabbix/zabbix-server-mysql/tags
+      # ubuntu-3.0.4 / centos-3.(0|2)-latest / centos-4.(0|2|4)-latest
+      default: "4.4-latest"
+    - variable: "HTTP_PORT"
+      label: "HTTP_PORT"
+      description: "HTTP_PORT"
+      type: "int"
+      required: true
+      default: 11080
+    # Zabbix Server trapper port
+    - variable: "ZABBIX_SVR_PORT"
+      label: "ZABBIX_SVR_PORT"
+      description: "ZABBIX_SVR_PORT"
+      type: "int"
+      required: true
+      default: 10051
+
+    - variable: "DB_HOST"
+      label: "DB_HOST"
+      description: "DB_HOST"
+      type: "string"
+      required: true
+    - variable: "DB_NAME"
+      label: "DB_NAME"
+      description: "DB_NAME"
+      type: "string"
+      required: true
+      default: "zabbix"
+    - variable: "DB_USER"
+      label: "DB_USER"
+      description: "DB_USER"
+      type: "string"
+      required: true
+      default: "zabbix"
+    - variable: "DB_USER_PASSWORD"
+      label: "DB_USER_PASSWORD"
+      description: "DB_USER_PASSWORD"
+      type: "string"
+      required: true
+      # default: "**some-passwd**"
+    - variable: "DB_ROOT_PASSWORD"
+      label: "DB_ROOT_PASSWORD"
+      description: "DB_ROOT_PASSWORD"
+      type: "string"
+      required: true
+      # default: "**some-passwd**"
+    - variable: "DB_EXT_PORT"
+      label: "DB_EXT_PORT"
+      description: "DB_EXT_PORT"
+      type: "int"
+      required: true
+      default: 13306
+
+    - variable: "TIME_ZONE"
+      label: "TIME_ZONE"
+      description: "TIME_ZONE"
+      type: "string"
+      required: true
+      default: "Asia/Tokyo"
+    - variable: "LOG_LEVEL"
+      label: "LOG_LEVEL"
+      description: "LOG_LEVEL"
+      type: "int"
+      required: true
+      default: "3"
+# Storage
+    - variable: "zabbix_mysql"
+      label: "zabbix_mysql"
+      description: "zabbix_mysql"
+      type: "string"
+      required: true
+      default: "/opt/zabbix/mysql"
+    - variable: "zabbix_data"
+      label: "zabbix_data"
+      description: "zabbix_data"
+      type: "string"
+      required: true
+      default: "/opt/zabbix/data"
+    - variable: "zabbix_alertscripts"
+      label: "zabbix_alertscripts"
+      description: "alertscripts"
+      type: "string"
+      required: true
+      default: "/opt/zabbix/alertscripts"
+    # - variable: "volume_driver"
+    #   label: "volume_driver"
+    #   description: "volume_driver rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "rancher-nfs"
+    - variable: "WEB_FONT_TTF"
+      label: "WEB_FONT_TTF"
+      description: "CentOS: yum install -y vlgothic-p-fonts"
+      type: "string"
+      required: true
+      # CentOS: yum install -y vlgothic-p-fonts
+      default: "/usr/share/fonts/vlgothic/VL-PGothic-Regular.ttf"
+
+# agent
+
+services:
+  ZabbixDb:
+    scale: 1
+  ZabbixServer:
+    scale: 1
+  ZabbixWeb:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 2
+      interval: 30000
+      strategy: recreate
+      # request_line: GET "/" "HTTP/1.0"
