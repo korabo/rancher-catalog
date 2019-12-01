@@ -116,8 +116,6 @@ catalog:
 # agent
 
 services:
-  ZabbixDb:
-    scale: 1
   ZabbixServer:
     scale: 1
   ZabbixWeb:
