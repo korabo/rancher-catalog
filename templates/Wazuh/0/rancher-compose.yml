@@ -1,0 +1,45 @@
+version: '2'
+catalog:
+  name: "Wazuh"
+  version: "v1.0.0"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "wekan_db"
+      label: "wekan_db"
+      description: "wekan_db"
+      type: "string"
+      required: true
+      default: "wekan_db"
+    - variable: "wekan_db_dump"
+      label: "wekan_db_dump"
+      description: "wekan_db_dump"
+      type: "string"
+      required: true
+      default: "wekan_db_dump"
+    - variable: "volume_driver"
+      label: "volume_driver"
+      description: "volume_driver rancher-nfs"
+      type: "string"
+      required: true
+      default: "rancher-nfs"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 16080
+    - variable: "root_url"
+      label: "root_url"
+      description: "root_url"
+      type: "string"
+      required: true
+      default: "http://localhost"
+services:
+  wazuh:
+    scale: 1
+  elasticsearch:
+    scale: 1
+  kibana:
+    scale: 1
+  nginx:
+    scale: 1

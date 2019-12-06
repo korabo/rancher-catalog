@@ -1,0 +1,7 @@
+name: Wazuh
+description: "Wazuh on Elastic stack with , , , "
+version: v1.0.0
+category: "HIDS"
+maintainer: S.TAKE(KRB/SPG)
+license: MIT
+projectURL: https://wekan.github.io/
