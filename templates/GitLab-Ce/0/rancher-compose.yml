@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "GitLab-Ce"
-  version: "v1.0.1"
+  version: "v1.0.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "gitlab_host_name"
@@ -28,6 +28,11 @@ catalog:
       type: "int"
       required: true
       default: 61443
+    - variable: "gitlab_root_psw"
+      label: "gitlab_root_psw"
+      description: "gitlab_root_psw"
+      type: "string"
+      required: true
     - variable: "gitlab_store"
       label: "gitlab_store"
       description: "gitlab_store rancher-nfs"
