@@ -1,6 +1,6 @@
 .catalog:
   name: Gitlab CE
-  version: 1.0.11
+  version: 1.0.12
   description: |
     Gitlab CE is a free GitHub alternative
   minimum_rancher_version: v0.56.0
