@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "GitLab-Ce"
-  version: "v1.0.6"
+  version: "v1.0.7"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "gitlab_host_name"
