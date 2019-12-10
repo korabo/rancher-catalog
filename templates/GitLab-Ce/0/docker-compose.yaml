@@ -1,13 +1,18 @@
+# Wazuh App Copyright (C) 2019 Wazuh Inc. (License GPLv2)
 version: '2'
 
 services:
   gitlab-ce:
     image: gitlab/gitlab-ce:latest
     # hostname: "${gitlab_host_name}"
+    restart: always
     ports:
-      - "${gitlab_ssh_port}:22"
-      - "${gitlab_http_port}:80"
-      - "${gitlab_https_port}:443"
+      - "61022:22"
+      - "61080:80"
+      - "61443:443"
+      # - "${gitlab_ssh_port}:22"
+      # - "${gitlab_http_port}:80"
+      # - "${gitlab_https_port}:443"
     # volumes:
     #   - ${gitlab_store}/data:/var/opt/gitlab
     #   - ${gitlab_store}/logs:/var/log/gitlab
