@@ -1,6 +1,4 @@
-# Wazuh App Copyright (C) 2019 Wazuh Inc. (License GPLv2)
 version: '2'
-
 services:
   gitlab-ce:
     image: gitlab/gitlab-ce:latest
