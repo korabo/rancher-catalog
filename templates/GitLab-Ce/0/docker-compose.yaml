@@ -10,11 +10,11 @@
 #   gitlab/gitlab-ce:latest
 # https://qiita.com/Mr-K/items/e0d8f905946703767954
 version: '2'
-services:
 
+services:
   gitlab:
     image: gitlab/gitlab-ce:latest
-    hostname: ${gitlab_host_name}
+    hostname: "${gitlab_host_name}"
     ports:
       - "${gitlab_ssh_port}:22"
       - "${gitlab_http_port}:80"
@@ -30,5 +30,5 @@ services:
         external_url '${gitlab_external_url}'
         gitlab_rails['gitlab_shell_ssh_port'] = ${gitlab_ssh_port}
 
-  gitlab-runner:
-    image: gitlab/gitlab-runner:alpine
+  # gitlab-runner:
+  #   image: gitlab/gitlab-runner:alpine
