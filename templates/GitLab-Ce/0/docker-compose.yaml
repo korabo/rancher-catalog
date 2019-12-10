@@ -19,10 +19,10 @@ services:
       - "${gitlab_ssh_port}:22"
       - "${gitlab_http_port}:80"
       - "${gitlab_https_port}:443"
-    volumes:
-      - ${gitlab_store}/data:/var/opt/gitlab
-      - ${gitlab_store}/logs:/var/log/gitlab
-      - ${gitlab_store}/config:/etc/gitlab
+    # volumes:
+    #   - ${gitlab_store}/data:/var/opt/gitlab
+    #   - ${gitlab_store}/logs:/var/log/gitlab
+    #   - ${gitlab_store}/config:/etc/gitlab
     volume_driver: ${volume_driver}
     environment:
       GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
