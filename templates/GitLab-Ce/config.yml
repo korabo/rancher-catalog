@@ -1,4 +1,4 @@
-name: "GitLab-Ce"
+name: "Gitlab CE"
 description: "GitLab-Ce stack with , , , "
 version: v1.0.8
 category: "git"
