@@ -2,10 +2,16 @@ version: '2'
 volumes:
   gitlab-app-data:
     driver: ${volumedriver}
+    driver_opts:
+      exportBase: /opt/share/gitlab
   gitlab-log-data:
     driver: ${volumedriver}
+    driver_opts:
+      exportBase: /opt/share/gitlab
   gitlab-conf-files:
     driver: ${volumedriver}
+    driver_opts:
+      exportBase: /opt/share/gitlab
 
 services:
   gitlab-server:
