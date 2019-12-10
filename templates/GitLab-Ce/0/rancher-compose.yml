@@ -1,58 +1,58 @@
 version: '2'
 catalog:
   name: "GitLab-Ce"
-  version: "v1.0.8"
+  version: "v1.0.9"
   description: "S.TAKE(KRB/SPG)"
   questions:
-    - variable: "gitlab_host_name"
-      label: "gitlab_host_name"
-      description: "gitlab_host_name"
-      type: "string"
-      required: true
-      default: "gitlab.bizrobo.com"
-    - variable: "gitlab_ssh_port"
-      label: "gitlab_ssh_port"
-      description: "gitlab_ssh_port"
-      type: "int"
-      required: true
-      default: 61022
-    - variable: "gitlab_http_port"
-      label: "gitlab_http_port"
-      description: "gitlab_http_port"
-      type: "int"
-      required: true
-      default: 61080
-    - variable: "gitlab_https_port"
-      label: "gitlab_https_port"
-      description: "gitlab_https_port"
-      type: "int"
-      required: true
-      default: 61443
-    - variable: "gitlab_root_psw"
-      label: "gitlab_root_psw"
-      description: "gitlab_root_psw"
-      type: "string"
-      required: true
-    - variable: "gitlab_store"
-      label: "gitlab_store"
-      description: "gitlab_store rancher-nfs"
-      type: "string"
-      required: true
-      default: "gitlab"
-    - variable: "volume_driver"
-      label: "volume_driver"
-      description: "volume_driver rancher-nfs"
-      type: "string"
-      required: true
-      default: "rancher-nfs"
-    # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
-    - variable: "gitlab_external_url"
-      label: "gitlab_external_url"
-      description: "gitlab_external_url"
-      type: "string"
-      required: true
-      # default: "http://gitlab.bizrobo.com:61080/gitlab"
-      default: "/gitlab"
+    # - variable: "gitlab_host_name"
+    #   label: "gitlab_host_name"
+    #   description: "gitlab_host_name"
+    #   type: "string"
+    #   required: true
+    #   default: "gitlab.bizrobo.com"
+    # - variable: "gitlab_ssh_port"
+    #   label: "gitlab_ssh_port"
+    #   description: "gitlab_ssh_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61022
+    # - variable: "gitlab_http_port"
+    #   label: "gitlab_http_port"
+    #   description: "gitlab_http_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61080
+    # - variable: "gitlab_https_port"
+    #   label: "gitlab_https_port"
+    #   description: "gitlab_https_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61443
+    # - variable: "gitlab_root_psw"
+    #   label: "gitlab_root_psw"
+    #   description: "gitlab_root_psw"
+    #   type: "string"
+    #   required: true
+    # - variable: "gitlab_store"
+    #   label: "gitlab_store"
+    #   description: "gitlab_store rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "gitlab"
+    # - variable: "volume_driver"
+    #   label: "volume_driver"
+    #   description: "volume_driver rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "rancher-nfs"
+    # # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
+    # - variable: "gitlab_external_url"
+    #   label: "gitlab_external_url"
+    #   description: "gitlab_external_url"
+    #   type: "string"
+    #   required: true
+    #   # default: "http://gitlab.bizrobo.com:61080/gitlab"
+    #   default: "/gitlab"
 services:
   gitlab-ce:
     scale: 1
