@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "GitLab-Ce"
-  version: "v1.0.5"
+  version: "v1.0.6"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "gitlab_host_name"
@@ -55,7 +55,7 @@ catalog:
       default: "/gitlab"
 
 services:
-  gitlab:
+  gitlab-ce:
     scale: 1
   # gitlab-runner:
   #   scale: 4

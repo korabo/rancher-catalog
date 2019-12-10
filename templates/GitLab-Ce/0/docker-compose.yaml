@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  gitlab:
+  gitlab-ce:
     image: gitlab/gitlab-ce:latest
     # hostname: "${gitlab_host_name}"
     ports:
@@ -13,11 +13,11 @@ services:
     #   - ${gitlab_store}/logs:/var/log/gitlab
     #   - ${gitlab_store}/config:/etc/gitlab
     # volume_driver: ${volume_driver}
-    environment:
-      GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url '${gitlab_external_url}'
-        gitlab_rails['gitlab_shell_ssh_port'] = ${gitlab_ssh_port}
+    # environment:
+    #   GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
+      # GITLAB_OMNIBUS_CONFIG: |
+      #   external_url '${gitlab_external_url}'
+      #   gitlab_rails['gitlab_shell_ssh_port'] = ${gitlab_ssh_port}
 
   # gitlab-runner:
   #   image: gitlab/gitlab-runner:alpine
