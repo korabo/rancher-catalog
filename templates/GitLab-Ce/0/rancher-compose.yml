@@ -1,6 +1,6 @@
 .catalog:
   name: Gitlab CE
-  version: 1.0.2
+  version: 1.0.3
   description: |
     Gitlab CE is a free GitHub alternative
   minimum_rancher_version: v0.56.0
@@ -46,6 +46,12 @@
       required: true
       default: 8022
       type: "int"
+    - variable: "gitlab_external_url"
+      label: "gitlab_external_url"
+      description: "gitlab_external_url like http://18.179.136.192:8080/gitlab"
+      type: "string"
+      required: true
+      default: "http://ext.host.name:8080/gitlab"
     - variable: "gitlab_volume_path"
       description: "base path for gitlab data"
       label: "Volume Path:"
@@ -119,10 +125,3 @@ gitlab-runner:
     #   required: true
     #   default: "rancher-nfs"
     # # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
-    # - variable: "gitlab_external_url"
-    #   label: "gitlab_external_url"
-    #   description: "gitlab_external_url"
-    #   type: "string"
-    #   required: true
-    #   # default: "http://gitlab.bizrobo.com:61080/gitlab"
-    #   default: "/gitlab"
