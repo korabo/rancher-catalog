@@ -8,9 +8,9 @@ services:
       - ${ssh_port}:22/tcp
       - ${http_port}:80/tcp
       - ${https_port}:443/tcp
-    labels:
-      io.rancher.container.hostname_override: container_name
-    image: "gitlab/gitlab-ce:latest"
+    # labels:
+    #   io.rancher.container.hostname_override: container_name
+    image: "gitlab/gitlab-ce:12.4.5-ce.0"
     volumes:
       - ${gitlab_volume_path}/app-data:/var/opt/gitlab
       - ${gitlab_volume_path}/log-data:/var/log/gitlab
