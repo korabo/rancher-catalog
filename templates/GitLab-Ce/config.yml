@@ -1,6 +1,6 @@
 name: "Gitlab CE"
 description: "GitLab-Ce stack with , , , "
-version: v1.0.8
+version: v1.0.0
 category: "git"
 maintainer: S.TAKE(KRB/SPG)
 license: MIT

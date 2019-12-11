@@ -1,20 +1,8 @@
 version: '2'
-volumes:
-  gitlab-app-data:
-    driver: ${volumedriver}
-    driver_opts:
-      exportBase: /opt/share/gitlab
-  gitlab-log-data:
-    driver: ${volumedriver}
-    driver_opts:
-      exportBase: /opt/share/gitlab
-  gitlab-conf-files:
-    driver: ${volumedriver}
-    driver_opts:
-      exportBase: /opt/share/gitlab
 
 services:
   gitlab-server:
+    hostname: gitlab-ce.bizrobo.local
     restart: always
     ports:
       - ${ssh_port}:22/tcp
@@ -22,31 +10,35 @@ services:
       - ${https_port}:443/tcp
     labels:
       io.rancher.container.hostname_override: container_name
-    image: "gitlab/gitlab-ce:11.11.5-ce.0"
+    image: "gitlab/gitlab-ce:latest"
     volumes:
-      - gitlab-app-data:/var/opt/gitlab
-      - gitlab-log-data:/var/log/gitlab
-      - gitlab-conf-files:/etc/gitlab
+      - ${gitlab_volume_path}/app-data:/var/opt/gitlab
+      - ${gitlab_volume_path}/log-data:/var/log/gitlab
+      - ${gitlab_volume_path}/conf-files:/etc/gitlab
     environment:
+      GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
       GITLAB_OMNIBUS_CONFIG: |
-        external_url '${gitlab_omnipus_prefix}${gitlab_hostname}'
-        registry_external_url '${gitlab_omnipus_prefix}${registry_gitlab_hostname}'
-        gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
-
-    # volumes:
-    #   - ${gitlab_store}/data:/var/opt/gitlab
-    #   - ${gitlab_store}/logs:/var/log/gitlab
-    #   - ${gitlab_store}/config:/etc/gitlab
-    # volume_driver: ${volume_driver}
-    # environment:
-    #   GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
+        external_url '${gitlab_external_url}'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${gitlab_ssh_port}
       # GITLAB_OMNIBUS_CONFIG: |
-      #   external_url '${gitlab_external_url}'
-      #   gitlab_rails['gitlab_shell_ssh_port'] = ${gitlab_ssh_port}
+      #   external_url '${gitlab_omnipus_prefix}${gitlab_hostname}'
+      #   registry_external_url '${gitlab_omnipus_prefix}${registry_gitlab_hostname}'
+      #   gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
 
-  # gitlab-runner:
-  #   image: gitlab/gitlab-runner:alpine
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
 
+
+# volumes:
+#   gitlab-app-data:
+#     driver: ${volumedriver}
+#   gitlab-log-data:
+#     driver: ${volumedriver}
+#   gitlab-conf-files:
+#     driver: ${volumedriver}
+#     # driver_opts:
+#     #   host: proxy
+#     #   exportBase: /opt/share/gitlab
 
 # https://docs.gitlab.com/omnibus/docker/
 # sudo docker run --detach \

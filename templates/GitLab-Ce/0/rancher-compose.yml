@@ -1,34 +1,33 @@
 .catalog:
   name: Gitlab CE
-  version: 1.0.12
+  version: 1.0.0
   description: |
     Gitlab CE is a free GitHub alternative
   minimum_rancher_version: v0.56.0
   maintainer: "Alexis Ducastel <alexis@ducastel.net>"
   uuid: gitlab-0
   questions:
-    - variable: "gitlab_hostname"
-      description: "Gitlab hostname (without uri scheme http:// or https://)"
-      label: "Hostname:"
+    - variable: "gitlab_root_psw"
+      description: "Gitlab root password"
+      label: "gitlab_root_psw:"
       required: true
-      default: "git.example.com"
       type: "string"
-    - variable: "registry_gitlab_hostname"
-      description: "Registry Gitlab hostname (without uri scheme http:// or https://)"
-      label: "Registry hostname:"
-      required: true
-      default: "registry.example.com"
-      type: "string"
-    - variable: "gitlab_omnipus_prefix"
-      label: "Gitlab external_url prefix:"
-      description: |
-        This is needed for the docker-compose file to set the correct external_url
-      default: 'http://'
-      required: true
-      type: "enum"
-      options:
-        - 'http://'
-        - 'https://'
+    # - variable: "registry_gitlab_hostname"
+    #   description: "Registry Gitlab hostname (without uri scheme http:// or https://)"
+    #   label: "Registry hostname:"
+    #   required: true
+    #   default: "registry.example.com:8080/gitlab"
+    #   type: "string"
+    # - variable: "gitlab_omnipus_prefix"
+    #   label: "Gitlab external_url prefix:"
+    #   description: |
+    #     This is needed for the docker-compose file to set the correct external_url
+    #   default: 'http://'
+    #   required: true
+    #   type: "enum"
+    #   options:
+    #     - 'http://'
+    #     - 'https://'
     - variable: "http_port"
       description: "HTTP port to expose on host. Will be used to bind TCP"
       label: "HTTP port:"
@@ -45,17 +44,23 @@
       description: "SSH port to expose on host. Will be used to bind TCP"
       label: "SSH port:"
       required: true
-      default: 22
+      default: 8022
       type: "int"
-    - variable: "volumedriver"
-      description: "Choose the Volume Driver being used.(Option: local or rancher-nfs)"
-      label: "Volume Driver:"
+    - variable: "gitlab_volume_path"
+      description: "base path for gitlab data"
+      label: "Volume Path:"
       required: true
-      default: local
-      type: "enum"
-      options:
-        - local
-        - rancher-nfs
+      default: "/opt/store/gitlab"
+      type: "string"
+    # - variable: "volumedriver"
+    #   description: "Choose the Volume Driver being used.(Option: local or rancher-nfs)"
+    #   label: "Volume Driver:"
+    #   required: true
+    #   default: local
+    #   type: "enum"
+    #   options:
+    #     - local
+    #     - rancher-nfs
 
 gitlab-server:
   scale: 1
@@ -67,6 +72,9 @@ gitlab-server:
     strategy: recreate
     response_timeout: 3000
     healthy_threshold: 2
+
+gitlab-runner:
+  scale: 4
 
 
     # - variable: "gitlab_host_name"
