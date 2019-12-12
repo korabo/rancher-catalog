@@ -1,3 +1,4 @@
+# https://registry.hub.docker.com/r/gitlab/gitlab-ce
 version: '2'
 
 services:
@@ -18,6 +19,7 @@ services:
       - ${gitlab_volume_path}/conf-files:/etc/gitlab
     environment:
       GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
+      # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
       GITLAB_OMNIBUS_CONFIG: |
         external_url '${gitlab_external_url}'
         gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
