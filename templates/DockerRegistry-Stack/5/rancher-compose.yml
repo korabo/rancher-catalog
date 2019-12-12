@@ -1,0 +1,50 @@
+version: '2'
+catalog:
+  name: "DockerRegistry-Stack"
+  version: "v1.4.2-local"
+  description: "S.TAKE(KRB/SPG)"
+  questions:
+    - variable: "rg_volume_path"
+      label: "rg_volume_path"
+      description: "docker registry volume path"
+      type: "string"
+      required: true
+      default: "/opt/store/registry"
+    - variable: "ext_http_port"
+      label: "ext_http_port"
+      description: "ext_http_port"
+      type: "int"
+      required: true
+      default: 5555
+    - variable: "inner_reg_port"
+      label: "inner_reg_port"
+      description: "inner_reg_port"
+      type: "int"
+      required: true
+      default: 5555
+    - variable: "ext_http_port_front"
+      label: "ext_http_port_front"
+      description: "ext_http_port_front"
+      type: "int"
+      required: true
+      default: 5580
+
+services:
+  registry:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: ${inner_reg_port}
+      unhealthy_threshold: 2
+      interval: 300000
+      strategy: recreate
+
+  registryFront:
+    scale: 1
+
+  dockerDinD:
+    scale: 1
+
+  dockerCli:
+    scale: 1

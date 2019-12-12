@@ -16,7 +16,7 @@ services:
       - REGISTRY_HTTP_ADDR=0.0.0.0:${inner_reg_port}
       # - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/somewhere
     volumes:
-    - ${rg_volume_path}/registry:/var/lib/registry
+    - ${docker_registry}:/var/lib/registry
     volume_driver: ${volume_driver}
 
   registryFront:
@@ -68,7 +68,7 @@ services:
     links:
     - registry:registry
     volumes:
-    - ${rg_volume_path}/dind:/var/lib/docker
+    - ${docker_dind}:/var/lib/docker
 
 # docker run -it --rm --link some-docker:docker docker:18 sh
   dockerCli:
@@ -84,4 +84,4 @@ services:
     - registry:registry
     - dockerDinD:docker
     volumes:
-    - ${rg_volume_path}/client:${rg_volume_path}/client
+    - ${docker_client}:${docker_client}
