@@ -21,7 +21,7 @@ services:
       GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
       # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
       GITLAB_OMNIBUS_CONFIG: |
-        external_url '${gitlab_external_url}'
+        external_url '${gitlab_external_proto}://${gitlab_external_host}/${gitlab_external_context}'
         gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
       # GITLAB_OMNIBUS_CONFIG: |
       #   external_url '${gitlab_omnipus_prefix}${gitlab_hostname}'
@@ -54,3 +54,8 @@ services:
 #   --volume /srv/gitlab/data:/var/opt/gitlab \
 #   gitlab/gitlab-ce:latest
 # https://qiita.com/Mr-K/items/e0d8f905946703767954
+
+# Configuring GitLab...
+# /opt/gitlab/embedded/bin/runsvdir-start: line 24: ulimit: pending signals: cannot modify limit: Operation not permitted
+# /opt/gitlab/embedded/bin/runsvdir-start: line 34: ulimit: max user processes: cannot modify limit: Operation not permitted
+# /opt/gitlab/embedded/bin/runsvdir-start: line 37: /proc/sys/fs/file-max: Read-only file system

@@ -1,6 +1,6 @@
 .catalog:
   name: Gitlab CE
-  version: 1.0.4
+  version: 1.0.5
   description: |
     Gitlab CE is a free GitHub alternative
   minimum_rancher_version: v0.56.0
@@ -32,26 +32,41 @@
       description: "HTTP port to expose on host. Will be used to bind TCP"
       label: "HTTP port:"
       required: true
-      default: 8080
+      default: 51080
       type: "int"
     - variable: "https_port"
       description: "HTTPS port to expose on host. Will be used to bind TCP"
       label: "HTTPS port:"
       required: true
-      default: 8443
+      default: 51443
       type: "int"
     - variable: "ssh_port"
       description: "SSH port to expose on host. Will be used to bind TCP"
       label: "SSH port:"
       required: true
-      default: 8022
+      default: 51022
       type: "int"
-    - variable: "gitlab_external_url"
-      label: "gitlab_external_url"
-      description: "gitlab_external_url like http://18.179.136.192:8080/gitlab"
+    - variable: "gitlab_external_proto"
+      label: "gitlab_external_proto"
+      description: "gitlab_external_proto like http/https"
+      required: true
+      default: "http"
+      type: "enum"
+      options:
+        - http
+        - https
+    - variable: "gitlab_external_host"
+      label: "gitlab_external_host"
+      description: "gitlab_external_host like ext.example.domain"
       type: "string"
       required: true
-      default: "http://ext.host.name:8080/gitlab"
+      default: "ext.example.domain"
+    - variable: "gitlab_external_context"
+      label: "gitlab_external_context"
+      description: "subpath like gitlab => http://ext.example.comain/gitlab"
+      type: "string"
+      required: false
+      default: "gitlab"
     - variable: "gitlab_volume_path"
       description: "base path for gitlab data"
       label: "Volume Path:"
