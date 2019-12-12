@@ -1,28 +1,37 @@
 # Wazuh App Copyright (C) 2019 Wazuh Inc. (License GPLv2)
+# https://documentation.wazuh.com/3.10/docker/index.html
+# sysctl -w vm.max_map_count=262144
 version: '2'
 
 services:
   wazuh:
-    image: wazuh/wazuh:3.9.5_7.2.1
+    image: wazuh/wazuh:${VERSION}
     hostname: wazuh-manager
     restart: always
     ports:
-      - "1514:1514/udp"
-      - "1515:1515"
-      - "514:514/udp"
-      - "55000:55000"
+      - "${wz_snd_evt_port_udp}:1514/udp"
+      - "${wz_agt_reg_port}:1515"
+      - "${wz_snd_evt_sys_port_udp}:514/udp"
+      - "${wz_http_req_port}:55000"
+    volumes:
+      - ${wz_volume_path}/wazuh_data:/var/ossec/data:Z
+      - ${wz_volume_path}/wazuh_postfix:/etc/postfix:Z
+      - ${wz_volume_path}/wazuh_filebeat:/etc/filebeat
+      # - ${wz_volume_path}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
 
   elasticsearch:
-    image: wazuh/wazuh-elasticsearch:3.9.5_7.2.1
+    image: wazuh/wazuh-elasticsearch:${VERSION}
     hostname: elasticsearch
     restart: always
     ports:
-      - "9200:9200"
+      - "${es_rest_api_port}:9200"
     environment:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - ELASTIC_CLUSTER=true
       - CLUSTER_NODE_MASTER=true
       - CLUSTER_MASTER_NODE_NAME=es01
+    volumes:
+      - ${wz_volume_path}/elasticsearch_data:/usr/share/elasticsearch/data:Z
     ulimits:
       memlock:
         soft: -1
@@ -30,7 +39,7 @@ services:
     mem_limit: 2g
 
   kibana:
-    image: wazuh/wazuh-kibana:3.9.5_7.2.1
+    image: wazuh/wazuh-kibana:${VERSION}
     hostname: kibana
     restart: always
     depends_on:
@@ -38,16 +47,17 @@ services:
     links:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
+
   nginx:
-    image: wazuh/wazuh-nginx:3.9.5_7.2.1
+    image: wazuh/wazuh-nginx:${VERSION}
     hostname: nginx
     restart: always
     environment:
       - NGINX_PORT=443
       - NGINX_CREDENTIALS
     ports:
-      - "80:80"
-      - "443:443"
+      - "${ngx_http_port}:80"
+      - "${ngx_https_port}:443"
     depends_on:
       - kibana
     links:

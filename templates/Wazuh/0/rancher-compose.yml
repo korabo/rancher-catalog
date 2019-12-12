@@ -4,36 +4,63 @@ catalog:
   version: "v1.0.0"
   description: "S.TAKE(KRB/SPG)"
   questions:
-    - variable: "wekan_db"
-      label: "wekan_db"
-      description: "wekan_db"
+    - variable: "VERSION"
+      label: "VERSION"
+      description: "Wazuh version, like 3.9.5_7.2.1; see https://registry.hub.docker.com/r/wazuh/wazuh/tags"
       type: "string"
       required: true
-      default: "wekan_db"
-    - variable: "wekan_db_dump"
-      label: "wekan_db_dump"
-      description: "wekan_db_dump"
-      type: "string"
-      required: true
-      default: "wekan_db_dump"
-    - variable: "volume_driver"
-      label: "volume_driver"
-      description: "volume_driver rancher-nfs"
-      type: "string"
-      required: true
-      default: "rancher-nfs"
-    - variable: "ext_http_port"
-      label: "ext_http_port"
-      description: "ext_http_port"
+      default: "3.9.5_7.2.1"
+    - variable: "wz_snd_evt_port_udp"
+      label: "wz_snd_evt_port"
+      description: "send event port udp"
       type: "int"
       required: true
-      default: 16080
-    - variable: "root_url"
-      label: "root_url"
-      description: "root_url"
-      type: "string"
+      default: 1514
+    - variable: "wz_agt_reg_port"
+      label: "wz_agt_reg_port"
+      description: "Agents registration service"
+      type: "int"
       required: true
-      default: "http://localhost"
+      default: 1515
+    - variable: "wz_snd_evt_sys_port_udp"
+      label: "wz_snd_evt_sys_port_udp"
+      description: "Send collected events from syslog (when configured for UDP) - Default"
+      type: "int"
+      required: true
+      default: 514
+    - variable: "wz_http_req_port"
+      label: "wz_http_req_port"
+      description: "Incoming HTTP requests"
+      type: "int"
+      required: true
+      default: 55000
+    - variable: "wz_volume_path"
+      label: "wz_volume_path"
+      description: "base path for wazuh data"
+      required: true
+      default: "/opt/store/wazuh"
+      type: "string"
+
+    - variable: "es_rest_api_port"
+      label: "es_rest_api_port"
+      description: "Elasticsearch RESTful API"
+      type: "int"
+      required: true
+      default: 9200
+
+    - variable: "ngx_http_port"
+      label: "ngx_http_port"
+      description: "Nginx Http Port"
+      type: "int"
+      required: true
+      default: 52080
+    - variable: "ngx_https_port"
+      label: "ngx_https_port"
+      description: "Nginx Https Port"
+      type: "int"
+      required: true
+      default: 52443
+
 services:
   wazuh:
     scale: 1
