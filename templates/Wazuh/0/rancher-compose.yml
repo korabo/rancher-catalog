@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Wazuh"
-  version: "v1.0.1"
+  version: "v1.0.2"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "VERSION"
@@ -39,6 +39,15 @@ catalog:
       description: "base path for wazuh data"
       required: true
       default: "/opt/store/wazuh"
+      type: "string"
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+      # java.nio.file.AccessDeniedException: /usr/share/elasticsearch/data/nodes
+      # must do: chmog g+rwx /usr/share/elasticsearch/data => ${wz_volume_path}/elasticsearch/data
+    - variable: "wz_esdatadir_path"
+      label: "wz_esdatadir_path"
+      description: "wazuh elasticsearch data: must do, mkdir -p ${wz_esdatadir_path};chmog g+rwx ${wz_esdatadir_path}; chgrp 1000 ${wz_esdatadir_path}"
+      required: true
+      default: "/opt/store/wazuh/esdatadir"
       type: "string"
 
     - variable: "es_rest_api_port"
