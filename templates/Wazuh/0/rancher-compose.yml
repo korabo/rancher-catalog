@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Wazuh"
-  version: "v1.0.0"
+  version: "v1.0.1"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "VERSION"
@@ -9,7 +9,7 @@ catalog:
       description: "Wazuh version, like 3.9.5_7.2.1; see https://registry.hub.docker.com/r/wazuh/wazuh/tags"
       type: "string"
       required: true
-      default: "3.9.5_7.2.1"
+      default: "latest"
     - variable: "wz_snd_evt_port_udp"
       label: "wz_snd_evt_port"
       description: "send event port udp"

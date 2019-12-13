@@ -20,6 +20,7 @@ services:
       # - ${wz_volume_path}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
 
   elasticsearch:
+  # java.nio.file.AccessDeniedException: /usr/share/elasticsearch/data/nodes
     image: wazuh/wazuh-elasticsearch:${VERSION}
     hostname: elasticsearch
     restart: always
@@ -30,6 +31,7 @@ services:
       - ELASTIC_CLUSTER=true
       - CLUSTER_NODE_MASTER=true
       - CLUSTER_MASTER_NODE_NAME=es01
+      - TAKE_FILE_OWNERSHIP=true
     volumes:
       - ${wz_volume_path}/elasticsearch_data:/usr/share/elasticsearch/data:Z
     ulimits:
