@@ -1,0 +1,61 @@
+# https://registry.hub.docker.com/r/gitlab/gitlab-ce
+version: '2'
+
+services:
+  gitlab-server:
+    hostname: gitlab-ce.bizrobo.local
+    restart: always
+    ports:
+      - ${ssh_port}:22/tcp
+      - ${http_port}:80/tcp
+      - ${https_port}:443/tcp
+    # labels:
+    #   io.rancher.container.hostname_override: container_name
+    image: "gitlab/gitlab-ce:${VERSION}"
+    # image: "gitlab/gitlab-ce:11.11.5-ce.0" # 12.5.4-ce.0
+    volumes:
+      - ${gitlab_volume_path}/app-data:/var/opt/gitlab
+      - ${gitlab_volume_path}/log-data:/var/log/gitlab
+      - ${gitlab_volume_path}/conf-files:/etc/gitlab
+    environment:
+      GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
+      # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url '${gitlab_external_proto}://${gitlab_external_host}/${gitlab_external_context}'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
+      # GITLAB_OMNIBUS_CONFIG: |
+      #   external_url '${gitlab_omnipus_prefix}${gitlab_hostname}'
+      #   registry_external_url '${gitlab_omnipus_prefix}${registry_gitlab_hostname}'
+      #   gitlab_rails['gitlab_shell_ssh_port'] = ${ssh_port}
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:${VERSION_RUNNER}
+
+
+# volumes:
+#   gitlab-app-data:
+#     driver: ${volumedriver}
+#   gitlab-log-data:
+#     driver: ${volumedriver}
+#   gitlab-conf-files:
+#     driver: ${volumedriver}
+#     # driver_opts:
+#     #   host: proxy
+#     #   exportBase: /opt/share/gitlab
+
+# https://docs.gitlab.com/omnibus/docker/
+# sudo docker run --detach \
+#   --hostname gitlab.example.com \
+#   --publish 443:443 --publish 80:80 --publish 22:22 \
+#   --name gitlab \
+#   --restart always \
+#   --volume /srv/gitlab/config:/etc/gitlab \
+#   --volume /srv/gitlab/logs:/var/log/gitlab \
+#   --volume /srv/gitlab/data:/var/opt/gitlab \
+#   gitlab/gitlab-ce:latest
+# https://qiita.com/Mr-K/items/e0d8f905946703767954
+
+# Configuring GitLab...
+# /opt/gitlab/embedded/bin/runsvdir-start: line 24: ulimit: pending signals: cannot modify limit: Operation not permitted
+# /opt/gitlab/embedded/bin/runsvdir-start: line 34: ulimit: max user processes: cannot modify limit: Operation not permitted
+# /opt/gitlab/embedded/bin/runsvdir-start: line 37: /proc/sys/fs/file-max: Read-only file system

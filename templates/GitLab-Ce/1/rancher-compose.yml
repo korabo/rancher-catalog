@@ -1,0 +1,154 @@
+.catalog:
+  name: Gitlab CE
+  version: 1.1.0
+  description: |
+    Gitlab CE is a free GitHub alternative
+  minimum_rancher_version: v0.56.0
+  maintainer: "Alexis Ducastel <alexis@ducastel.net>"
+  uuid: gitlab-0
+  questions:
+    - variable: "VERSION"
+      description: "Gitlab version: 8.8.2-ce.0 9.5.9-ce.0 10.8.6-ce.0 11.11.8-ce.0"
+      label: "VERSION"
+      required: true
+      type: "string"
+      default: 'latest'
+    - variable: "VERSION_RUNNER"
+      description: "Gitlab runner version: alpine-v9.5.0-rc.1 alpine-v10.8.2 alpine-v11.11.1"
+      label: "VERSION_RUNNER"
+      required: true
+      type: "string"
+      default: 'alpine'
+    - variable: "gitlab_root_psw"
+      description: "Gitlab root password"
+      label: "gitlab_root_psw:"
+      required: true
+      type: "string"
+    # - variable: "registry_gitlab_hostname"
+    #   description: "Registry Gitlab hostname (without uri scheme http:// or https://)"
+    #   label: "Registry hostname:"
+    #   required: true
+    #   default: "registry.example.com:8080/gitlab"
+    #   type: "string"
+    # - variable: "gitlab_omnipus_prefix"
+    #   label: "Gitlab external_url prefix:"
+    #   description: |
+    #     This is needed for the docker-compose file to set the correct external_url
+    #   default: 'http://'
+    #   required: true
+    #   type: "enum"
+    #   options:
+    #     - 'http://'
+    #     - 'https://'
+    - variable: "http_port"
+      description: "HTTP port to expose on host. Will be used to bind TCP"
+      label: "HTTP port:"
+      required: true
+      default: 51080
+      type: "int"
+    - variable: "https_port"
+      description: "HTTPS port to expose on host. Will be used to bind TCP"
+      label: "HTTPS port:"
+      required: true
+      default: 51443
+      type: "int"
+    - variable: "ssh_port"
+      description: "SSH port to expose on host. Will be used to bind TCP"
+      label: "SSH port:"
+      required: true
+      default: 51022
+      type: "int"
+    - variable: "gitlab_external_proto"
+      label: "gitlab_external_proto"
+      description: "gitlab_external_proto like http/https"
+      required: true
+      default: "http"
+      type: "enum"
+      options:
+        - http
+        - https
+    - variable: "gitlab_external_host"
+      label: "gitlab_external_host"
+      description: "gitlab_external_host like ext.example.domain"
+      type: "string"
+      required: true
+      default: "ext.example.domain"
+    - variable: "gitlab_external_context"
+      label: "gitlab_external_context"
+      description: "subpath like gitlab => http://ext.example.comain/gitlab"
+      type: "string"
+      required: false
+      default: "gitlab"
+    - variable: "gitlab_volume_path"
+      description: "base path for gitlab data"
+      label: "Volume Path:"
+      required: true
+      default: "/opt/store/gitlab"
+      type: "string"
+    # - variable: "volumedriver"
+    #   description: "Choose the Volume Driver being used.(Option: local or rancher-nfs)"
+    #   label: "Volume Driver:"
+    #   required: true
+    #   default: local
+    #   type: "enum"
+    #   options:
+    #     - local
+    #     - rancher-nfs
+
+gitlab-server:
+  scale: 1
+  retain_ip: true
+  health_check:
+    port: 80
+    interval: 30000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 3000
+    healthy_threshold: 2
+
+gitlab-runner:
+  scale: 4
+
+
+    # - variable: "gitlab_host_name"
+    #   label: "gitlab_host_name"
+    #   description: "gitlab_host_name"
+    #   type: "string"
+    #   required: true
+    #   default: "gitlab.bizrobo.com"
+    # - variable: "gitlab_ssh_port"
+    #   label: "gitlab_ssh_port"
+    #   description: "gitlab_ssh_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61022
+    # - variable: "gitlab_http_port"
+    #   label: "gitlab_http_port"
+    #   description: "gitlab_http_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61080
+    # - variable: "gitlab_https_port"
+    #   label: "gitlab_https_port"
+    #   description: "gitlab_https_port"
+    #   type: "int"
+    #   required: true
+    #   default: 61443
+    # - variable: "gitlab_root_psw"
+    #   label: "gitlab_root_psw"
+    #   description: "gitlab_root_psw"
+    #   type: "string"
+    #   required: true
+    # - variable: "gitlab_store"
+    #   label: "gitlab_store"
+    #   description: "gitlab_store rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "gitlab"
+    # - variable: "volume_driver"
+    #   label: "volume_driver"
+    #   description: "volume_driver rancher-nfs"
+    #   type: "string"
+    #   required: true
+    #   default: "rancher-nfs"
+    # # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
