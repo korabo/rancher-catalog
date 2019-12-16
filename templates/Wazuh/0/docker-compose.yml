@@ -14,9 +14,9 @@ services:
       - "${wz_snd_evt_sys_port_udp}:514/udp"
       - "${wz_http_req_port}:55000"
     volumes:
-      - ${wz_volume_path}/wazuh_data:/var/ossec/data:Z
-      - ${wz_volume_path}/wazuh_postfix:/etc/postfix:Z
-      - ${wz_volume_path}/wazuh_filebeat:/etc/filebeat
+      - ${wz_volume_path}:/var/ossec/data:Z
+      # - ${wz_volume_path}/wazuh_postfix:/etc/postfix:Z
+      # - ${wz_volume_path}/wazuh_filebeat:/etc/filebeat
       # - ${wz_volume_path}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
 
   elasticsearch:
