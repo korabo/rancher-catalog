@@ -7,6 +7,7 @@
   maintainer: "Alexis Ducastel <alexis@ducastel.net>"
   uuid: gitlab-0
   questions:
+      # https://namionobkup.hatenablog.com/entry/2018/07/09/235651
     - variable: "VERSION"
       description: "Gitlab version: 8.8.2-ce.0 9.5.9-ce.0 10.8.6-ce.0 11.11.8-ce.0"
       label: "VERSION"

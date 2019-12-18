@@ -17,6 +17,7 @@ services:
       - ${gitlab_volume_path}/app-data:/var/opt/gitlab
       - ${gitlab_volume_path}/log-data:/var/log/gitlab
       - ${gitlab_volume_path}/conf-files:/etc/gitlab
+      # docker run -it gitlab/gitlab-ce:xxxx update-permissions
     environment:
       GITLAB_ROOT_PASSWORD: "${gitlab_root_psw}"
       # https://docs.gitlab.com/omnibus/settings/configuration.html#enable-relative-url-in-gitlab
