@@ -16,7 +16,7 @@ services:
       - REGISTRY_HTTP_ADDR=0.0.0.0:${inner_reg_port}
       # - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/somewhere
     volumes:
-    - ${rg_volume_path}/data:/var/lib/registry
+    - ${rg_volume_path}:/var/lib/registry
     volume_driver: ${volume_driver}
 
   registryFront:
