@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "DockerRegistry-Stack"
-  version: "v1.4.2-local"
+  version: "v1.4.3-local"
   description: "S.TAKE(KRB/SPG)"
   questions:
     - variable: "rg_volume_path"
@@ -28,6 +28,18 @@ catalog:
       type: "int"
       required: true
       default: 5580
+    - variable: "docker_dind"
+      label: "docker_dind"
+      description: "docker_dind"
+      type: "string"
+      required: true
+      default: "/opt/store/docker_dind"
+    - variable: "docker_client"
+      label: "docker_client"
+      description: "docker_client"
+      type: "string"
+      required: true
+      default: "/opt/store/docker_client"
 
 services:
   registry:
